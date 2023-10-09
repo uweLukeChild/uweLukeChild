@@ -1,0 +1,228 @@
+
+<head>
+
+</head>
+
+<body>
+<a href="/index.html">Back to homepage</a>
+
+<h1 id="tutorial-2-variables-and-program-input-output">Tutorial 2 - Variables and Program Input/Output</h1>
+<p>In this practical, we will build on last week’s work by enabling our programs to receive and respond to user input. By the end of this practical you should be familiar with: </p>
+<ol>
+<li>Variables and data types in C++. </li>
+<li>The std::cin function for reading data from the QWERTY keyboard into variables within our programs. </li>
+<li>How to display variable values with std::cout.</li>
+<li>A basic loop for repeating blocks of code. </li>
+</ol>
+<h2 id="getting-stated">Getting stated</h2>
+<p>Ensure that your run function is empty, and that any work from last week is appropriately saved.</p>
+<h2 id="recap">Recap</h2>
+<p>We can use the std::out command to print text to the user:</p>
+<pre><code class="lang-cpp"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Hello Person"</span>;
+</code></pre>
+<h2 id="variables">Variables</h2>
+<p>Write the following code into your main run function:</p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">int</span> year = <span class="hljs-number">2022</span>; 
+<span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"The Value of Year: "</span> &lt;&lt; year &lt;&lt; <span class="hljs-string">"\n"</span>;
+</code></pre>
+<p>Check that it compiles and runs, and that the number is printed.</p>
+<p>The first line of this program is called a variable declaration, and there is usually 4 parts. The first part is the type of variable we want to have, in this instance we have a variable of type int (see the bellow table for different types). The second part of this is the variables name, in this case we call it year. Part 3 is the assignment operator, used to give variables a value. And finally part 4 is the value we wish to assign, in this case 2022.</p>
+<pre><code class="lang-cpp">(<span class="hljs-number">1</span>) int    (<span class="hljs-number">2</span>) year (<span class="hljs-number">3</span>) = (<span class="hljs-number">4</span>) <span class="hljs-number">2022</span>;
+</code></pre>
+<p>We then use the std::cout command to print the value of the variable year. Note we can chain up as many messages and variables for printing as we like as long as we separate them by the &lt;&lt; symbol.</p>
+<p>We will use 3 main data types in IAP for storing data and these are, int, float and std::string. There are 2 other data types that you also might come across and these are included in the table for reference. Will not be using (bool, char) data types during this practical</p>
+<table>
+<thead>
+<tr>
+<th>Data Type</th>
+<th>Description</th>
+<th>Range of values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>int</td>
+<td>Store whole numbers, i.e. 1670, 5, 123985718275</td>
+<td>-2147483648 to 2147483647 </td>
+</tr>
+<tr>
+<td>float</td>
+<td>Store numbers with a decimal part. i.e. 0.76, 440.56</td>
+<td>10^38 to −10^38 </td>
+</tr>
+<tr>
+<td>std::string</td>
+<td>Store strings of characters, i.e. “IAP” , “I Love programming”</td>
+<td>ASCII characters</td>
+</tr>
+<tr>
+<td>bool</td>
+<td>Stores true or false values only</td>
+<td>True or false</td>
+</tr>
+<tr>
+<td>char</td>
+<td>Store single characters, i.e. ‘a’, ‘b’, ‘5’</td>
+<td>A single ASCII character</td>
+</tr>
+</tbody>
+</table>
+<p>An example of using each of these is shown bellow.</p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">int</span> age = <span class="hljs-number">25</span>;
+<span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> name = <span class="hljs-string">"Phill"</span>;
+<span class="hljs-keyword">float</span> height = <span class="hljs-number">1.83</span>;
+<span class="hljs-keyword">bool</span> btnState = <span class="hljs-literal">true</span>;
+<span class="hljs-keyword">char</span> decision = <span class="hljs-string">'y'</span>;
+</code></pre>
+<p>There are many other data types, but we will explore these in detail in later practicals. </p>
+<h2 id="data-input">Data Input</h2>
+<p>By definition variables are designed to hold data that might change, but the examples so far have used data that is the same each time the program runs. One way to change the values of such variables by user input is to use the std::cin command.</p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">int</span> age = <span class="hljs-number">0</span>;
+<span class="hljs-built_in">std</span>::<span class="hljs-built_in">cin</span> &gt;&gt; age;
+</code></pre>
+<p>In the above code snippet we declare a variable called age of type int and give it an initial value of 0. To get the users input we use the std::cin command, followed by the &gt;&gt; symbol (note the direction of flow, we want to put data from the input into age). We then specify the variable that we want to write into.</p>
+<h2 id="exercise-1-basic-input">Exercise 1: Basic input</h2>
+<p>Copy the following code into your run loop.</p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">void</span> IAP::run ()
+{
+    <span class="hljs-keyword">int</span> age = <span class="hljs-number">0</span>;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"please enter your age\n"</span>;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cin</span> &gt;&gt; age;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Your age is: "</span> &lt;&lt; age &lt;&lt; <span class="hljs-string">"\n"</span>;
+}
+</code></pre>
+<p>Note that as we are supply the value of the variable age via the std::cin command, therefore the value we supply on the first line (0) is not needed. However, it is ALWAYS good practice to give a variable a default value, in this case 0.</p>
+<h2 id="exercise-2-frequency-input-into-aserve">Exercise 2: Frequency Input Into Aserve</h2>
+<p>Firstly, clear the main run loop and then copy and rearrange the following code into the correct order so that it executes correctly.</p>
+<pre><code class="lang-cpp"><span class="hljs-number">1.</span>    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cin</span> &gt;&gt; frequency;
+<span class="hljs-number">2.</span>    <span class="hljs-keyword">float</span> frequency = <span class="hljs-number">23000</span>;
+<span class="hljs-number">3.</span>    aserveOscillator(<span class="hljs-number">0</span>, frequency, <span class="hljs-number">1.0</span>, <span class="hljs-number">0</span>);
+<span class="hljs-number">4.</span>    aserveSleep(<span class="hljs-number">1000</span>);
+<span class="hljs-number">5.</span>    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Please enter a frequency value in hz \n"</span>;
+</code></pre>
+<h2 id="exercise-3-adding-amplitude-control">Exercise 3: Adding Amplitude Control</h2>
+<p>Extend the above exercise so that it prompts the user for <em>both</em> a frequency and amplitude before using those values. Remember that each variable can only hold a single piece of data, so you will need to add a second variable. Follow these steps:</p>
+<ol>
+<li>Add an additional floating-point variable with an appropriate name.</li>
+<li>Add an additional prompt for the user.</li>
+<li>Read their additional value into the appropriate variable.</li>
+<li>Display both values on screen to the user.</li>
+<li>Set the oscillator amplitude and oscillator frequency to the values entered previously. </li>
+</ol>
+<h2 id="exercise-4-loops">Exercise 4: Loops</h2>
+<p>The exercise above will exit once the user has heard the oscillator play. Practically speaking, if the user will wishes to enter another set of frequency and amplitude values they must start the program from scratch. To avoid this, and have the program repeatedly ask for input until the user quits the program, we can use a loop.</p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">void</span> IAP::run ()
+{
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) 
+    {
+        <span class="hljs-comment">//Code from previous exercise</span>
+    }   
+}
+</code></pre>
+<p>This is a <strong>loop</strong> and it enables any code that is between the { and {} to be repeated. The <strong>true</strong> part of the while loop makes this section of code repeat forever. Adjust your solution to the previous exercise by adding in a while loop.</p>
+<h2 id="variable-initialization-and-introduction-to-debugging">Variable initialization and introduction to debugging</h2>
+<p>Save your solution to the previous exercise and add the following code to your main run loop.</p>
+<pre><code class="lang-cpp"><span class="hljs-attribute">void</span> IAP::run ()
+{
+    <span class="hljs-attribute">int</span> x = <span class="hljs-number">0</span>;
+    <span class="hljs-attribute">int</span> y = <span class="hljs-number">0</span>;
+    <span class="hljs-attribute">x</span> = <span class="hljs-number">5</span>;
+    <span class="hljs-attribute">y</span> = x;
+    <span class="hljs-attribute">x</span> = <span class="hljs-number">7</span>;
+}
+</code></pre>
+<p>We will open up and use the debugger to see what is happening on each line.</p>
+<p>Firstly, click on the line number where int x = 0 has been written, to drop a break point. (see below). Break points appear in blue. (note that your line numbers may be different to those shown in the figure)</p>
+<p><img src="../images/debug2_1.png" alt="Debug 1"></p>
+<p>When you run your program you should now see that the program pauses where you have placed the break point.</p>
+<p>Ensure that the debug window (1) is being shown at the bottom of the Xcode project. We can now use the step over button (2) to manual step through the program as its running. Observe what happens on each step in the debug window (1) on each press of the step over button.</p>
+<p><img src="../images/debug2_2.png" alt="Debug 2"></p>
+<p>On step 2 you should see that the variable <strong>y</strong> appears in the debug window and is given the value 0. Remember that before this point (step 1) the variable <strong>y</strong> was not known to the program.</p>
+<p>Step 3 should show how <strong>x</strong> now holds the number 5. Step 4 should show how both <strong>x and y</strong> now have the same value. Finally, the last step should should show the the program ends with <strong>y</strong> having a value of 5 and <strong>x</strong> a value of 7.</p>
+<p><img src="../images/debug2_3.png" alt="Debug 3"></p>
+<p>Although this may seem a trivial example, debugging is a very important part of learning any programming language. We will continue to use the debugger in future practicals to fix broken code and understand what is happening on each line of a program.</p>
+<p>To end the debugging process, grab the blue break point marker and drag it away to the right to remove it.</p>
+<h2 id="operators">Operators</h2>
+<p>A crucial feature of any programming language is the ability to describe operations on data. For example we can use the + operator to add two numbers together.</p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">int</span> <span class="hljs-keyword">sum</span> = <span class="hljs-number">10</span> + <span class="hljs-number">5</span>;
+</code></pre>
+<p>A list of common arithmetic operators is provided in the table below:</p>
+<table>
+<thead>
+<tr>
+<th>Operator</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&quot; = &quot;</td>
+<td>Assign</td>
+</tr>
+<tr>
+<td>&quot; + &quot;</td>
+<td>Add</td>
+</tr>
+<tr>
+<td>&quot; - &quot;</td>
+<td>Subtract</td>
+</tr>
+<tr>
+<td>&quot; * &quot;</td>
+<td>Multiply</td>
+</tr>
+<tr>
+<td>&quot; / &quot;</td>
+<td>Divide</td>
+</tr>
+<tr>
+<td>&quot; % &quot;</td>
+<td>Modulus or remainder</td>
+</tr>
+</tbody>
+</table>
+<p><em>It&#39;s worth noting &gt;&gt; and &lt;&lt; are also operators that we&#39;ve used with std::cin and std:cout, however these are not arithmetic operators like those listed above.</em></p>
+<h2 id="rules-of-precedence">Rules of precedence</h2>
+<p>It is important to consider the rules of precedence when creating arithmetic expressions. The operators <em> / % have higher precedence than the + - operators. This means that in a single expression, all </em> / % operators are computed prior to the + - operators. Therefore, you may have to use brackets to ensure that a calculation is performed as intended. An example is provided below: </p>
+<p>1 + 2 * 3 is computed as 1 + 6 = 7 whereas</p>
+<p>( 1 + 2 ) <em> 3 is computed as 3 </em> 3 = 9</p>
+<h2 id="challenge-exercise-simple-average">Challenge Exercise: Simple Average</h2>
+<p>Write a program that reads two numbers from the user and computes their average.
+To compute an average of two values, you can simply do the following (assuming that num1, num2 and result are our variables)</p>
+<pre><code class="lang-cpp"><span class="hljs-attribute">result</span> = num1 + num2 / 2.0;
+</code></pre>
+<p>The steps for getting started are as follows:</p>
+<ol>
+<li>Create two float variables called num1 and num2</li>
+<li>Use std::cout to instruct the user to enter the first number</li>
+<li>Use std::cin to read a number from the user</li>
+<li>Repeats steps 2-3 for the second number</li>
+<li>Compute the result using the above sum</li>
+<li>Use std::cout to print the result to the user</li>
+</ol>
+<h2 id="debug-exercise">Debug exercise</h2>
+<p>Give two reasons why the following code will the not work:</p>
+<pre><code class="lang-cpp"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &gt;&gt; <span class="hljs-string">"I am broken, please fix me…"</span>
+</code></pre>
+<h2 id="homework">Homework</h2>
+<p>Firstly, ensure that you have completed exercise 4.</p>
+<p>Extend exercise 4 to use std::cin to read in the users choice of wave type but before switching on oscillators. Secondly switch on a second oscillator that has a frequency value that is twice the value of the original. Finally add a third oscillator that is half the value of the original. You should end up with a program that switches on three oscillators at the same time with a specified base frequency, amplitude and wavetype.</p>
+<h2 id="important-material">Important Material</h2>
+<p>Knowledge of the following will be assumed in next week’s practical:</p>
+<ol>
+<li>The properties of the data types int, float, and std::string.</li>
+<li>The use and meaning of the while(true) loop.</li>
+<li>The use of std::cin and std::cout to store and display variable values.</li>
+<li>The conventions for declaring and identifying/naming variables. </li>
+<li>The basics of applying arithmetic operators to variables.</li>
+</ol>
+<h2 id="videos">Videos</h2>
+<p>The following videos may help you during this session:</p>
+<h3 id="variables">Variables</h3>
+<p><a href="http://www.youtube.com/watch?v=UNdOMshCIlk"><img src="http://img.youtube.com/vi/UNdOMshCIlk/0.jpg" alt="Video screenshot saying /'Introductary Audio Programming in C++ Quick Reference Series: Variables"></a></p>
+<h3 id="text-input">Text Input</h3>
+<p><a href="http://www.youtube.com/watch?v=c0Wo8mMCpDQ"><img src="http://img.youtube.com/vi/c0Wo8mMCpDQ/0.jpg" alt="Video screenshot saying /'Introductary Audio Programming in C++ Quick Reference Series: std::cin"></a></p>
+
+<a href="/index.html">Return to homepage</a>
+</body>
+

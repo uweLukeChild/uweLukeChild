@@ -1,0 +1,307 @@
+
+<head>
+
+</head>
+
+<body>
+<a href="/index.html">Back to homepage</a>
+
+<h1 id="tutorial-15-bitwise-manipulation">Tutorial 15 – Bitwise manipulation</h1>
+<p>In this practical we will learn about bitwise manipulation - a powerful feature of the C ++ language that enables variables to be accessed and modified at the bit level. On successful completion of this practical you will understand: </p>
+<ol>
+<li>The binary representation of integer numbers.</li>
+<li>How the bitwise operators &amp;, |, «, and » can be used to isolate bits and merge binary data. </li>
+<li>How to communicate with Aserve’s Bit Representation component. </li>
+</ol>
+<h2 id="introduction">Introduction</h2>
+<p>C++ is a powerful and widely used programming language as it features the many advantages of a high-level language in addition to many useful operations which are usually associated with low-level languages. Bitwise manipulation is a low-level feature which is used in embedded systems (where a computer is an internal part of a larger system, such as an industrial process or a digital mixing console) and systems programming (where software often deals directly with the underlying hardware devices). Furthermore, raw MIDI requires bitwise operations to extract all of its contents.</p>
+<h2 id="decimal-and-binary-forms">Decimal and Binary Forms</h2>
+<p>The representation of binary integers has been discussed in a previous practical. The following is a reminder of the basic ideas: </p>
+<p>In a decimal (base 10) number, the value of each digit is between 0 and 9. The position of each digit within a number indicates the power of 10 multiplied by that digit. That multiplier increases by a factor of 10 each time the position moves one digit to the left. For example, for a decimal number with 6 digits the multipliers are as follows: </p>
+<p><img src="../images/6bit.png" height=200/></p>
+<p>In a binary (base 2) number, the value of each digit is 0 or 1. The position of each digit within a number indicates the power of 2 multiplied by that digit. That multiplier increases by a factor of 2 each time the position moves one digit to the left. For example, for a binary number with 16 digits the multipliers are as follows: </p>
+<p><img src="../images/16bit.png" height=200/></p>
+<p>Note that bits are numbered from 0 to 15 in a 16-bit number. The value of each multiplier is calculated by the formula 2n where n is the bit number. Some example binary to decimal conversions are as follows: </p>
+<table>
+<thead>
+<tr>
+<th>Binary</th>
+<th>Decimal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0000000000000111</td>
+<td>(4 + 2 + 1) = 7</td>
+</tr>
+<tr>
+<td>0000000000001110</td>
+<td>(8 + 4 + 2) = 14</td>
+</tr>
+<tr>
+<td>1000000000000001</td>
+<td>(32768 + 1) = 32769</td>
+</tr>
+<tr>
+<td>1111111111111111</td>
+<td>(32768 + 16384 + 8192 + 4096 + 2048 + 1024 + 512 + 256 + 128 + 64 + 32 + 16 + 8 + 4 + 2 + 1) = 65535</td>
+</tr>
+</tbody>
+</table>
+<p>Any integer in the range 0 to 65535 can be represented by a 16-bit binary number. Note that this is an <strong>unsigned</strong> integer so only positive values can be stored. </p>
+<h2 id="exercise-1-aserve-bit-representation">Exercise 1: Aserve Bit Representation</h2>
+<p>Aserve contains an 16x16 grid, that serves both as an input interface and graphical visualizer. We will discuss getting input from this bit grid shortly, but first we will look at setting the grid. </p>
+<p>Each row of the grid is set by a single value, in this case a 16-bit number whereby each bit represents a column from right to left. The following function can be used to set the grid:</p>
+<pre><code class="lang-cpp">aserveSetPixelGrid(<span class="hljs-built_in">int</span> <span class="hljs-built_in">row</span>, <span class="hljs-built_in">int</span> <span class="hljs-built_in">value</span>);
+</code></pre>
+<p>To visualize this set the first 6 rows to have the following values. (place all code inside the run() function)</p>
+<p>1, 255, 256, 170, 32769, 65535</p>
+<p><em>Try also experimenting with your own choice of numbers.</em></p>
+<h2 id="exercise-2-using-the-pixel-grid-callback">Exercise 2: Using the pixel grid callback</h2>
+<p>When the bit grid is clicked inside Aserve it triggers a callback inside our IAP class.</p>
+<pre><code class="lang-cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">callbackPixelGrid</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> x, <span class="hljs-keyword">int</span> y)</span></span>;
+</code></pre>
+<p>The callback provides two arguments corresponding to the x &amp; y positions of the click. You should uncomment and implement the callback, printing the x and y values. Once you have done this write down the values of the top left and bottom right values and keep these for future reference.</p>
+<p>You may notice that as you click the grid the callback triggers but the grid itself does not update its visual state. The interface and visualizer are intentionally decoupled from each other. We have already seen how to set the grid itself, but what we now need to do is covert the x value into a bit representation. </p>
+<h2 id="bit-shifting">Bit shifting</h2>
+<p>We have previously seen the &lt;&lt; and &gt;&gt; operators used for inserting variables into streams. However, they are also used as the bit shift operators. They left shift (&lt;&lt;) operator will shift all the bits inside a variable up by a given number of places. For example:</p>
+<pre><code class="lang-cpp"><span class="hljs-attribute">    int a</span> = 1;
+<span class="hljs-attribute">    a</span> = a &lt;&lt; 1;
+</code></pre>
+<p>In the above code, ‘a’ is now equal to 2, as it the bit that was representing the <strong>1</strong>, was shifted left into the bit representing <strong>2</strong>. If we shift the value 13 left by 1 place, we get 26, see the below table for a visual representation of this.</p>
+<pre><code class="lang-cpp"><span class="hljs-symbol">13 </span>&lt;&lt; <span class="hljs-number">1</span>
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Bit 7</th>
+<th>bit 6</th>
+<th>bit 5</th>
+<th>bit 4</th>
+<th>bit 3</th>
+<th>bit 2</th>
+<th>bit 1</th>
+<th>bit 0</th>
+<th>value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>128</td>
+<td>64</td>
+<td>32</td>
+<td>16</td>
+<td>8</td>
+<td>4</td>
+<td>2</td>
+<td>1</td>
+<td>---</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>13</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>26</td>
+</tr>
+</tbody>
+</table>
+<p>If you use the shift left operator the upper values can get lost. For example, if our variable is an 8-bit data type, and the top bit is 1, shifting this value left by 1 will result in the loss of this top bit.</p>
+<pre><code class="lang-cpp"><span class="hljs-symbol">133 </span>&lt;&lt; <span class="hljs-number">1</span>
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Bit 7</th>
+<th>bit 6</th>
+<th>bit 5</th>
+<th>bit 4</th>
+<th>bit 3</th>
+<th>bit 2</th>
+<th>bit 1</th>
+<th>bit 0</th>
+<th>value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>128</td>
+<td>64</td>
+<td>32</td>
+<td>16</td>
+<td>8</td>
+<td>4</td>
+<td>2</td>
+<td>1</td>
+<td>---</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>133</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+<p>The right shift operator is same as the left shift operator but shifts the bits in the opposite direction. Bits can also be lost by shifting them too far to the right. The general form of the bit shift operator looks like the following:</p>
+<pre><code class="lang-cpp">/* variable <span class="hljs-keyword">or</span> <span class="hljs-built_in">constant</span> <span class="hljs-keyword">to</span> shift */ &lt;&lt; /* <span class="hljs-built_in">number</span> <span class="hljs-keyword">of</span> bits <span class="hljs-keyword">to</span> shift <span class="hljs-keyword">by</span>*/
+
+/* variable <span class="hljs-keyword">or</span> <span class="hljs-built_in">constant</span> <span class="hljs-keyword">to</span> shift */ &gt;&gt; /* <span class="hljs-built_in">number</span> <span class="hljs-keyword">of</span> bits <span class="hljs-keyword">to</span> shift <span class="hljs-keyword">by</span>*/
+</code></pre>
+<p>To set an individual bit of a variable the following code can be applied:</p>
+<pre><code class="lang-cpp"><span class="hljs-attribute">int a</span> = 1 &lt;&lt; 7;
+</code></pre>
+<p>Using what we have learnt so far, add code to your bit grid callback that updates the state of the grid when the user clicks on it, to reflect the location they have just clicked. </p>
+<p>Note that bits are represented from right to left whereas clicks are reported from left-right. You will need to use the following code at the top of your callback to invert x.</p>
+<pre><code class="lang-cpp">x = <span class="hljs-number">15</span> - x;
+<span class="hljs-comment">//... code for setting the grid.</span>
+</code></pre>
+<p>Once you have completed this exercise you should encounter a strange bug, write a description of this somewhere safe, we will fix this later on in the practical!</p>
+<h2 id="bitwise-operators">Bitwise operators</h2>
+<p>There are two more important bitwise operators that we need to know about, bitwise and (&amp;) and bitwise or (|). These are very similar to the logical and/or operators (&amp;&amp;, ||) except they compute the result for each bit.</p>
+<p>If you have not done so already download the Binary Grid application from blackboard. Using the application compute the following values and note down their value. Note that you do not need to write code for this exercise.</p>
+<table>
+<thead>
+<tr>
+<th>Value a</th>
+<th>Value B</th>
+<th>Operation</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0000 1111</td>
+<td>0000 0000</td>
+<td>or</td>
+<td>---</td>
+</tr>
+<tr>
+<td>0000 1111</td>
+<td>0000 0000</td>
+<td>&amp;</td>
+<td>---</td>
+</tr>
+<tr>
+<td>0100 0000</td>
+<td>0100 0000</td>
+<td>or</td>
+<td>---</td>
+</tr>
+<tr>
+<td>1010 1010</td>
+<td>0101 0101</td>
+<td>or</td>
+<td>---</td>
+</tr>
+<tr>
+<td>1010 1010</td>
+<td>0101 0101</td>
+<td>&amp;</td>
+<td>---</td>
+</tr>
+<tr>
+<td>1001 0000</td>
+<td>1111 0000</td>
+<td>&amp;</td>
+<td>---</td>
+</tr>
+</tbody>
+</table>
+<p>Based on this we can update bits within a variable using the following code. </p>
+<pre><code class="lang-cpp"><span class="hljs-attribute">int a</span> = 2;
+<span class="hljs-attribute">a</span> = a | 8;
+</code></pre>
+<h2 id="bitwise-not-and-xor">Bitwise NOT and XOR</h2>
+<p>There are two other bitwise operations worth mentioning. The first bitwise not (~) will simply invert each of the bits. For example, the binary value:</p>
+<p>~0000 0001     will become     1111 1110</p>
+<p>The Bitwise not operator is reasonably uncommon, however the bitwise XOR (^) is even more so. The output of the XOR operator is 1 if the individual bits are different. The truth table for this is given below:</p>
+<table>
+<thead>
+<tr>
+<th>Input A</th>
+<th>Input B</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<h2 id="exercise-3-toggle-states">Exercise 3: Toggle states</h2>
+<p>We now want to update our program from exercise 2 so that each time a bit on the grid is clicked, if will toggle that part on/off. We will keep track of the state of the bit grid with a 16 element <strong>int</strong> array called <strong>states</strong>, whereby each element of the array corresponds to be a single row, and each bit corresponds to a column within the row.</p>
+<p>You should first check the states array to see if the bit is already set. If it is not set then set it, if it is set then clear it. You will then need to update aserves pixel grid with a suitable function call. Some more tips are given below:</p>
+<p>To check an individual bit:</p>
+<pre><code class="lang-cpp">    <span class="hljs-keyword">if</span> <span class="hljs-comment">(a &amp; (1 &lt;&lt; 4)</span>) {
+        <span class="hljs-comment">//check if bit 4 is 1</span>
+    }
+</code></pre>
+<p>To set an individual bit:</p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">a</span> = <span class="hljs-keyword">a</span> | (<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">2</span>);<span class="hljs-comment"> //set bit 2</span>
+</code></pre>
+<p>To clear an individual bit: (slightly complicated set of operations)</p>
+<pre><code class="lang-cpp">a = a &amp; (~ (<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">5</span>)); <span class="hljs-comment">//clear bit 5</span>
+</code></pre>
+<h2 id="exercise-4-drum-sequencer">Exercise 4: Drum sequencer</h2>
+<p>We will use what we have learnt so far to build a step sequencer application. In that the first 4 rows of Aserve’s bit grid will be used to trigger drums and the latter 12 used to trigger notes.  All of the code should be added within the run functions while loop.</p>
+<p>Some steps for getting started are provided bellow:</p>
+<ol>
+<li>Add a for loop that cycles for 15 down to and including 0, call the counter variable <strong>stepPosition</strong>.</li>
+<li>Add a second nested for loop that cycles from 0 up to but not including 16, call the counter variable row.</li>
+<li>Check the bit that corresponds to the current step and row position.</li>
+</ol>
+<h2 id="debug-challenge-exercise-snake">Debug &amp; Challenge Exercise: Snake</h2>
+<p>A version of Snake has been partially completed but is broken and requires you to fix the many errors. Download the files from here <a href="../../Code%20Exercises/Tutorial%2015/Debug">Tutorial 15 snake debug</a>.</p>
+
+<a href="/index.html">Return to homepage</a>
+</body>

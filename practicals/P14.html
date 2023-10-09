@@ -1,0 +1,194 @@
+
+<head>
+
+</head>
+
+<body>
+<a href="/index.html">Back to homepage</a>
+
+<h1 id="tutorial-14-files-string-manipulation">Tutorial 14 – Files &amp; String manipulation</h1>
+<p>In this practical you will learn how data can be written to, and read from files. This enables text, variable values and other program data to be saved into an external file on the computer’s file system between program runs. </p>
+<p>On successful completion of this practical you will understand: </p>
+<ol>
+<li>How to create, open, and close files.</li>
+<li>How to write data to a file</li>
+<li>How to read data from a file </li>
+<li>How to manipulate std::string</li>
+</ol>
+<h2 id="files">Files</h2>
+<p>Files are blocks of data that are saved on the file system of a computer’s storage devices. Files may contain text, music, images or any other type of data that can be stored on a computer system. Data which is internal to a computer program (variables) disappear when a program exits, so files are useful for storing data between independent runs of a program. The standard C++ library <strong>fstream</strong> provides a selection of basic file manipulation functions. </p>
+<h2 id="fstreams">fstreams</h2>
+<p>We have previously used C++ standard input/output stream to read text input from the user, or display text to the user in the console window. Similarly, C++ provides us with a set of file input/output streams, and these can be defined as follows:</p>
+<pre><code class="lang-cpp">  <span class="hljs-built_in">std</span>::ofstream fileOutput;
+</code></pre>
+<p>std::ofstream is used for representing the outward file stream and is used to write data to files.</p>
+<pre><code class="lang-cpp">  <span class="hljs-built_in">std</span>::ifstream fileInput;
+</code></pre>
+<p>std::ifstream is used for representing the input file stream and is used to read data from the file system.</p>
+<h2 id="opening-a-file">Opening a file</h2>
+<p>To use a file stream we first declare the type of stream we want to open, either in an input or output. As the streams are data types we also have to give them a name.</p>
+<p>To actually open a file we need to use the member function open(), which will associate a file stream variable with a file stored on our computer’s hard drive. The syntax for the open() function is as follows:</p>
+<pre><code class="lang-cpp">  fileVariable.<span class="hljs-built_in">open</span>(<span class="hljs-string">"path"</span>, options);
+</code></pre>
+<h2 id="path">Path</h2>
+<p>The first argument of the open function is the files path, this is either the location of the file on your computer’s hard drive, or the location where you wish to create a new file. Folder paths a separated with the / symbol (use \ on windows). For example, an <strong>absolute</strong> file path may look like this:</p>
+<p>&quot;/Users/sj4-hunt/Documents/IAP-2018-2019/sounds/bd.wav&quot;</p>
+<h2 id="options">Options</h2>
+<p>The second argument allows us to supply a number of options to the <strong>open</strong> function. The most common ones that we will use are the <strong>std::fstream::in</strong> and <strong>std::fstream::out</strong> constants. We will explore these as we go through the practical.</p>
+<p>Once a file is opened we can then call the fstream member function <strong>is_open()</strong> to check if the file is actually open before trying to go any further.</p>
+<pre><code class="lang-cpp">  <span class="hljs-keyword">if</span> (fileInputStream.is_open()) {
+    //<span class="hljs-keyword">file</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">open</span>
+</code></pre>
+<p>Once we are done with the file we need to close it. We simply call the member function close (). </p>
+<pre><code class="lang-cpp">  fileInputStream.close()<span class="hljs-comment">;</span>
+</code></pre>
+<h2 id="exercise-1-reading-from-a-file">Exercise 1: Reading from a file</h2>
+<p>Please download the supplied <a href="../../Code%20Exercises/Tutorial%2014/exercise1.txt">Tutorial 14 Exercise 1 text file</a> and place the file in the following location:</p>
+<pre><code class="lang-cpp">“Your iap <span class="hljs-keyword">project</span> folder”<span class="hljs-regexp">/iapProj/</span>Builds<span class="hljs-regexp">/MacOSX/</span>build<span class="hljs-regexp">/Debug/</span>
+</code></pre>
+<p><em>If you have recently downloaded a fresh iapProj the above folder will not exist. The folder is created as part of xcode&#39;s compilation process, so you may need to first run a build, then copy the file</em></p>
+<p>To complete this exercise, re-arrange the following blocks of code. The program should open a file and read each line. The code is supplied in blocks to make this exercise easier. </p>
+<pre><code class="lang-cpp">
+<span class="hljs-number">1.</span>
+<span class="hljs-keyword">if</span> (fileInputStream.is_open()) {
+
+}
+<span class="hljs-keyword">else</span> {
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"error opening file\n"</span>;
+}
+
+<span class="hljs-number">2.</span>
+
+fileInputStream.close();
+
+<span class="hljs-number">3.</span>
+<span class="hljs-built_in">std</span>::ifstream fileInputStream;
+fileInputStream.open(<span class="hljs-string">"exercise1.txt"</span>, <span class="hljs-built_in">std</span>::fstream::in);
+
+<span class="hljs-number">4.</span>
+<span class="hljs-built_in">std</span>::getline(fileInputStream, line);
+<span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; line &lt;&lt; <span class="hljs-string">"\n"</span>;
+
+<span class="hljs-number">5.</span>
+<span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> line;
+<span class="hljs-keyword">while</span> ( ! fileInputStream.eof()) {
+
+}
+
+<span class="hljs-number">6.</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;fstream&gt;</span></span>
+</code></pre>
+<p>Most of the code from the exercise has been explained in the first part of this practical. However, there are 3 new lines of code we have not encountered before.</p>
+<ol>
+<li>! fileInputStream.eof()</li>
+<li>std::getline(fileInputStream, line);</li>
+<li>#include <fstream>
+The first line of code is called within a while loop, and is simply asking the file stream if the end of the file (eof) has been reached. It will return <strong>false</strong> if there is still data in the file and <strong>true</strong> if the end has been reached. We use the ( ! ) operator to invert the result (instead of saying (is equal to false).</li>
+</ol>
+<p>The second line of code is called for each iteration of the while loop and attempts to read a complete line from the file. The two supplied arguments are the file stream you wish to read from and a string variable where the contents of the line can be stored.</p>
+<p>The third line of code is used so that code from the fstream library can be used. This library contains lots of functions for dealing with file input and output.</p>
+<p>You may we wondering why &quot;line&quot; can be passed in and then subsequently updated. That is because it is being passed by reference rather than by copy. <strong>Please refer to the lecture slides for more information on this.</strong></p>
+<h2 id="extracting-values-from-strings">Extracting values from Strings</h2>
+<p>All text stored in a plain text file is represent as ASCII characters, so the number 60 stored in a text file will be represented by two ASCII characters ‘6’ and ‘0’, however we often want to work with these characters as if they were actually a single integer data type. The standard C++ library provides a number of inbuilt functions for converting the contents of a string into other C++ data types (e.g. float and int). Two functions for doing this are shown below.</p>
+<pre><code class="lang-cpp">  <span class="hljs-built_in">int</span> intValue = std::stoi(str)<span class="hljs-comment">; </span>
+  //will attempt <span class="hljs-keyword">to</span> covert the std::<span class="hljs-built_in">string</span> variable <span class="hljs-string">'str'</span> <span class="hljs-keyword">to</span> <span class="hljs-built_in">int</span>
+</code></pre>
+<pre><code class="lang-cpp">  <span class="hljs-keyword">float</span> floatValue = std::stof(<span class="hljs-keyword">str</span>);
+  <span class="hljs-comment">//will attempt to covert the std::string variable 'str' to float</span>
+</code></pre>
+<p>Before doing this you should check the size of the str.</p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">if</span> (<span class="hljs-built_in">str</span>.<span class="hljs-built_in">size</span>() &gt; <span class="hljs-number">0</span>) {
+        <span class="hljs-comment">//Do coversion</span>
+}
+</code></pre>
+<p>If you attempt to covert a string that does not contain a valid value, then an error will be thrown.</p>
+<h2 id="exercise-2-synthesize-file-contents">Exercise 2: Synthesize file contents</h2>
+<p>Adapt and modify your solution to the previous exercise so that it reads in the numbers supplied in the file, converts these to a frequency and then synthesizes the value using Aserve. </p>
+<h2 id="writing-to-a-file">Writing to a file</h2>
+<p>Writing to a file is similar to reading from one. But instead we use the <strong>ofstream</strong> data type. Note that we must also change the <strong>option</strong> argument on the open() call as well.</p>
+<pre><code class="lang-cpp">  <span class="hljs-selector-tag">std</span><span class="hljs-selector-pseudo">::ofstream</span> <span class="hljs-selector-tag">fileOutputStream</span>;
+  <span class="hljs-selector-tag">fileOutputStream</span><span class="hljs-selector-class">.open</span>("<span class="hljs-selector-tag">file</span><span class="hljs-selector-class">.txt</span>", <span class="hljs-selector-tag">std</span><span class="hljs-selector-pseudo">::ofstream</span><span class="hljs-selector-pseudo">::out)</span>;
+</code></pre>
+<p>Once the file is open, we can simply write data to the file using the same method we use to write data to the std::out stream. </p>
+<pre><code class="lang-cpp">  fileOutputStream &lt;&lt; <span class="hljs-number">10</span>;  <span class="hljs-comment">//int</span>
+  fileOutputStream &lt;&lt; <span class="hljs-string">"I am writing a string"</span>;
+  fileOutputStream &lt;&lt; <span class="hljs-number">0.00001</span>; <span class="hljs-comment">//float</span>
+</code></pre>
+<p>as before we can combine multiple statements with multiple &lt;&lt; operators.</p>
+<pre><code class="lang-cpp">  fileOutputStream &lt;&lt; <span class="hljs-string">"Note: "</span> &lt;&lt; <span class="hljs-number">60</span> &lt;&lt; <span class="hljs-string">"<span class="hljs-subst">\n</span>"</span>;
+</code></pre>
+<h2 id="exercise-3-writing-to-our-file">Exercise 3: Writing to our file</h2>
+<p>Continuing on from the previous exercise, adapt your solution so that you first write the contents of the <strong>&quot;exercise1.txt&quot;</strong> file before trying to read it. Some suggested steps to achieve this are as follows. <em>Note your solution to exercise 2 should go after the code your write specifically for this exercise.</em></p>
+<ol>
+<li>Open file for writing</li>
+<li>Write at least 2 note numbers to this file</li>
+<li>Close file</li>
+<li>Solution to exercise 2.</li>
+</ol>
+<p><em>Note that all code should be written inside the run() function. Specify the note value manually for this exercise.</em></p>
+<h2 id="exercise-4-full-sequencer">Exercise 4: Full sequencer</h2>
+<p>For this exercise we will adapt our solution from the vector practical, exercise 3. <strong>You will need to complete that exercise first if you have not done so already.</strong></p>
+<p>For this exercise we will add a feature whereby if the user pushes the record button each of the values in the noteList are saved to a text file on a new line. If the user pushes the play button the current noteList is cleared and each note number in the file is loaded into the noteList vector. </p>
+<p>To test this program, you should play a sequence, hit record and close the program. Re-run the program and press &quot;play&quot;, <strong>the sequence you recorded previously should play.</strong></p>
+<h2 id="string-manipulation">String manipulation</h2>
+<p>Strings just like int’s and float’s can be added together, for example, we can do the following operation to add (or concatenate strings) together.</p>
+<pre><code class="lang-cpp">  <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> firstName = <span class="hljs-string">"Dennis"</span>;
+  <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> lastName = <span class="hljs-string">"Ritchie"</span>;
+
+  <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> fullName = firstName + <span class="hljs-string">", "</span> + lastName;
+</code></pre>
+<p>Therefore, the contents of the fullName would now be:</p>
+<pre><code class="lang-cpp">  Dennis, Ritchie
+</code></pre>
+<p>However, it is slightly more difficult to split the fullName string back into its parts. The ability to split strings of characters into smaller parts is however useful and necessary for many applications. We can use the <strong>substr()</strong> member function to return a sub-string from our original string. The substr takes 2 arguments, corresponding to the <strong>index</strong> of the letter you wish to start from and the <strong>len</strong> of the substring you wish to go up to (but not including). Doing the following would result in the string &quot;Den&quot; being returned.</p>
+<pre><code class="lang-cpp">  <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> subStr = fullName.substr( <span class="hljs-number">0</span>, <span class="hljs-number">3</span>); <span class="hljs-comment">//returns "den"</span>
+</code></pre>
+<p>Computing the following code would output &quot;nis,&quot;, as the substring would start at index 3 (&#39;n&#39;) and take the next 3 chars (&quot;is,&quot;).</p>
+<pre><code class="lang-cpp">  <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> subStr = fullName.subStr(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>); <span class="hljs-comment">//returns "nis,"</span>
+</code></pre>
+<p>If just 1 argument is supplied, then all the characters from the supplied index up to the end of the string will be returned. In the below example subStr will be equal to <strong>&quot;, Ritchie&quot;</strong>.</p>
+<pre><code class="lang-cpp">  <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> subStr = fullName.substr(<span class="hljs-number">6</span>);
+</code></pre>
+<p>However we will not often not know the exact position that we wish to split a string, however we can search for a specific sequence of characters using the <strong>find()</strong> string member function.</p>
+<pre><code class="lang-cpp">  <span class="hljs-built_in">std</span>::<span class="hljs-keyword">size_t</span> pos = fullName.find(<span class="hljs-string">","</span>);
+</code></pre>
+<p>The function will return the index of the start of the sequence supplied as an argument to the find function. In this case it will return 6. There are a couple of things to note here.</p>
+<p>std::size_t is a special data type used for storing sizes, and should be used in this instance instead of just <strong>int.</strong></p>
+<ol>
+<li>The find() function can be used to see if a string contains a substring.</li>
+<li>If the substring supplied to the find function is not found then pos will hold the value std::string::npos, and can be checked as follows:</li>
+</ol>
+<pre><code class="lang-cpp">  <span class="hljs-keyword">if</span> (pos == <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span>::npos) {
+    <span class="hljs-comment">//not found</span>
+  }
+</code></pre>
+<p>We could now extract our first and last names from fullName using the following code.</p>
+<pre><code class="lang-cpp">  <span class="hljs-built_in">std</span>::<span class="hljs-keyword">size_t</span> pos = fullName.find(<span class="hljs-string">","</span>);
+
+  <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> fName = fullName.substr(<span class="hljs-number">0</span>, pos);
+  <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> lName = fullName.substr(pos+<span class="hljs-number">1</span>);
+</code></pre>
+<h2 id="writing-a-string-splitting-function">Writing a string splitting function</h2>
+<p>To make the challenge exercise easier we will develop a function called <strong>splitString.</strong></p>
+<p>Split string will take 4 arguments and return a single <strong>bool.</strong> The 4 input arguments are as follows: </p>
+<ul>
+<li><strong>Input:</strong> the input string passed by copy</li>
+<li><strong>Token:</strong> the split point of the string, passed by copy</li>
+<li><strong>Left:</strong> the left side of the split passed by reference</li>
+<li><strong>Right:</strong> the right side of the split passed by reference
+The function should do the following:</li>
+</ul>
+<ol>
+<li>Search for the token in the input string, using find().</li>
+<li>If the value returned from find is equal to <strong>npos</strong> then set left and right to be equal to &quot;&quot; (blank string) and return false.</li>
+<li>else<ul>
+<li>Set left to a substring of input with range 0 up to the position</li>
+<li>Set right to be a substring of input with range position + the size of the token.</li>
+</ul>
+</li>
+<li>Return true;</li>
+</ol>
+<p>To test your code, download the supplied <a href="../../Code%20Exercises/Tutorial%2014/string%20split%20unit%20test.txt">Tutorial 14 string split test</a>. Add this code to your run() function. <strong>Read the comments carefully and check that you getting the correct values printed out.</strong></p>
+
+<a href="/index.html">Return to homepage</a>
+</body>

@@ -1,0 +1,221 @@
+
+<head>
+
+</head>
+
+<body>
+<a href="/index.html">Back to homepage</a>
+
+<h1 id="tutorial-12-algorithms-and-program-design">Tutorial 12 – Algorithms and Program design</h1>
+<p>This week we will explore building a number of programs and explore several algorithms. We will not be learning any new syntax this week, but rather reinforce our understanding of the concepts covered so far.</p>
+<p>You are encouraged to complete all of the programs outlined, however you may choose to do these in any order (however you will need to complete 2 before 3).
+The projects are as follows:</p>
+<ol>
+<li>Synth with attack and release envelopes<ul>
+<li>Supplied as two files, comment placeholders are supplied</li>
+</ul>
+</li>
+<li>Polyphonic synth<ul>
+<li>Supplied as a pseudocode </li>
+</ul>
+</li>
+<li>Arpeggiator<ul>
+<li>Supplied as a flowchart file</li>
+</ul>
+</li>
+<li>A generative music application<ul>
+<li>Supplied as a basic program</li>
+</ul>
+</li>
+</ol>
+<h2 id="program-1-attack-and-release-envelopes-">Program 1: Attack and Release Envelopes.</h2>
+<p>Firstly, download and open the supplied files <a href="../../Code%20Exercises/Tutorial%2012/AR%20Synth">Tutorial 12 AR Synth code</a> and copy them into both IAP.h and IAP.cpp of your project.</p>
+<p>For this exercise you will fill in the blanks by following the comments in the supplied file. All the <strong>shared variables</strong> you will require for this program are provided for you, and you should not need to declare any others. A brief description of the program is provided bellow.</p>
+<p>On most synthesizer it is desirable for the sound to ramp up it to its full amplitude, rather than produce its full amplitude instantaneously.  For example, a piano has a very short attack time, meaning that it reaches its full amplitude very quickly, where as a stringed instrument (e.g. violin) can gradually increase its amplitude. Release time is the opposite of attack and determines how quickly a note will reduce its amplitude to 0 (stop). In this program we will ramp the volume up and down in the run part of our program, increasing or decreasing the <em>amplitude</em> in small amounts each 1ms. The callbacks will be used to trigger the attack and release stages. </p>
+<p><img src="../images/asdr.png" /></p>
+<h2 id="program-2-polyphonic-synthesizer">Program 2: Polyphonic Synthesizer</h2>
+<p>Firstly, download and open the supplied <a href="../../Code%20Exercises/Tutorial%2012/Polyphonic%20Synth">Tutorial 12 Polyphonic Synth code</a> and copy them into both IAP.h and IAP.cpp.</p>
+<p>Historically in previous practical’s we have simply updated the frequency of an oscillator each time a new note is played, and by keeping the channel number the same each time we have limited ourselves to a monophonic synth. As Aserve has 24 channels, we can in theory have 24 oscillators all at different frequencies playing at once. Therefore, what we want to do is apply the following logic:</p>
+<h3 id="note-on-">Note on:</h3>
+<p>Each time a new note on message is receive we want to find a free oscillator i.e. one that is currently not playing, and use this to synthesize the note. If channel 2 is the first free oscillator, then we will synthesize the incoming note on channel 2.</p>
+<h3 id="note-off-">Note off:</h3>
+<p>Each time a note off message is received we want to find the oscillator that is playing ‘this note’s frequency’ and switch if off.</p>
+<p>To illustrate what should happen each time a note message is received a table of input events and corresponding Aserve oscillator states are shown.</p>
+<hr>
+
+<table>
+<thead>
+<tr>
+<th>﻿Message input</th>
+<th></th>
+<th></th>
+<th>Aserve</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Event</td>
+<td>Note</td>
+<td>Velocity</td>
+<td>Osc 1</td>
+<td>Osc 2</td>
+<td>Osc 3</td>
+</tr>
+<tr>
+<td>First note is pushed here</td>
+<td></td>
+<td></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>60</td>
+<td>127</td>
+<td>Puts note 60 on Osc 1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Second note is pushed here</td>
+<td></td>
+<td></td>
+<td>60</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>62</td>
+<td>127</td>
+<td>Puts note 62 on Osc 2 as Osc 1 is being used</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Third note is pushed here</td>
+<td></td>
+<td></td>
+<td>60</td>
+<td>62</td>
+<td>0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>65</td>
+<td>127</td>
+<td>Puts note 65 on Osc 3 as other Osc 2 and Osc 1 are being used</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>First is turned off</td>
+<td></td>
+<td></td>
+<td>60</td>
+<td>62</td>
+<td>65</td>
+</tr>
+<tr>
+<td>4</td>
+<td>60</td>
+<td>0</td>
+<td>Find channel this playing note 60 and switch it off, in this case OSC 1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td>0</td>
+<td>62</td>
+<td>65</td>
+</tr>
+<tr>
+<td>5</td>
+<td>65</td>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td>0</td>
+<td>62</td>
+<td>0</td>
+</tr>
+<tr>
+<td>6</td>
+<td>67</td>
+<td>127</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td>67</td>
+<td>62</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<hr>
+
+<p>We will need to keep track of the state of each oscillator inside our program. As there are 24 oscillators it would make sense that we use an array for keeping track of each oscillators current note. You should initialize each element of the array to be -1, and use -1 to represent a free oscillator. </p>
+<h2 id="program-3-arpegiator">Program 3: Arpegiator</h2>
+<p>To implement this program, you need to first have completed the previous exercise. Firstly, remove both calls to aserveOscillator from your callbackNoteReceived code. We will be now be controlling the synthesis of notes from within the run() function.</p>
+<p>You will now need to implement the following flowchart inside your run loop.</p>
+<p><img src="../images/flowchart.png" /></p>
+<h2 id="extensions">Extensions</h2>
+<p>Once you have setup the basic arpeggiator there are a few extensions we can apply. Firstly, ensure you have completed last weeks’ homework exercise. We can add a feature to this arpeggiator that controls in which order the notes are played. At the moment notes are arpeggiated in the order in which the keys are pushed down. However, we can sort the notes array so that notes are arpeggiated in either ascending or descending order. The steps to achieve this are as follows:</p>
+<ol>
+<li>Add a shared variable called order.</li>
+<li>Create a function called setPlayOrder()<ul>
+<li>If order is equal to 0, then apply <strong>std::sort</strong> on the notes array</li>
+<li>If order is equal to 1, then apply <strong>std::sort</strong> on the notes array, then call <strong>std::reverse</strong> on the notes array</li>
+</ul>
+</li>
+<li>Add a suitable callback that can be used to modify the value of ‘order’</li>
+<li>Think carefully about where you might want to call setPlayOrder().</li>
+</ol>
+<h2 id="program-4-generative-music">Program 4: Generative music</h2>
+<p>You are supplied with the start of a very basic generative music application available here <a href="../../Code%20Exercises/Tutorial%2012/Generative%20Music%20Application">Tutorial 12 Generative Music Application code</a>. However, it does not sound very good. There are a number of things we can do to improve this application.</p>
+<h2 id="random-number-generation">Random number generation</h2>
+<p>The <strong>arc4random()</strong> function can be used to generate random numbers, to generate numbers in a given range we can do the following:</p>
+<pre><code class="lang-cpp"><span class="hljs-attribute">    int note</span> = arc4random() % 128;
+</code></pre>
+<p>The modulo (%) operator is used to limit values so that they are less than the value supplied, in this case up to and including the value of 127. To produce values between 5 &amp; 10 we could do the following.</p>
+<pre><code class="lang-cpp">    int num = (<span class="hljs-name">arc4random</span>() % <span class="hljs-number">6</span>) + <span class="hljs-number">5</span><span class="hljs-comment">;</span>
+</code></pre>
+<p>The current application generates numbers in the range 0-127, which is not ideally suited to a musical application.</p>
+<ol>
+<li>First change the range of numbers, so that they are generated in the range 48-72.</li>
+<li>Pass each note through the <strong>majorScale</strong> function we developed last term.</li>
+</ol>
+<p>The notes that are played now should be a lot more musical and only trigger notes within a suitable scale, however the notes can have quite a wide jump, much larger then you would find commonly in music, to solve this you may wish to use the following idea:</p>
+<ol>
+<li>Keep track of the last note that was played. </li>
+<li>If the new note to be played is more than 12 semitones above, then subtract 12. </li>
+<li>If the new note to be played is less than 12 semitones bellow, then add 12.</li>
+</ol>
+<p>At this point the melody should start to sound quite reasonable, however the rhythm is still very chaotic. An idea for improving this is as follows:</p>
+<ol>
+<li>Create an array called rhythm values (a suggestion is shown below)</li>
+<li>Instead of generating a random rhythm value generate a random index into the above array, and then use this as the aserveSleep value. Think carefully about the maximum index that can be generated.</li>
+</ol>
+<pre><code class="lang-cpp">Rhythm <span class="hljs-string">values:</span> <span class="hljs-number">125</span>, <span class="hljs-number">250</span>, <span class="hljs-number">375</span>, <span class="hljs-number">500</span>, <span class="hljs-number">750</span>, <span class="hljs-number">1000</span>
+</code></pre>
+<p>Try experimenting with different values inside the rhythm values array including adding multiples of the same value.</p>
+
+<a href="/index.html">Return to homepage</a>
+</body>

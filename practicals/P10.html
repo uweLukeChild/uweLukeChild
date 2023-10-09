@@ -1,0 +1,108 @@
+
+<head>
+
+</head>
+
+<body>
+<a href="/index.html">Back to homepage</a>
+
+<h1 id="tutorial-10-arrays">Tutorial 10 – Arrays</h1>
+<p>In this practical you will learn how to create and work with arrays: a useful data structure that enables lots of variables of the same type to be collected into a single data structure. We will learn: </p>
+<ol>
+<li>How to create an array</li>
+<li>How to read and write data into an array</li>
+<li>How to refactor variables into an array</li>
+</ol>
+<h2 id="array">Array</h2>
+<p>When writing a program that stores a single value, previously you have created a single variable specifically for the job. If it is necessary to store multiple values, multiple variables must be declared. For example, if a problem requires us to store four separate note numbers, we could write the following declarations: </p>
+<pre><code class="lang-cpp">    int note1<span class="hljs-comment">;</span>
+    int note2<span class="hljs-comment">;</span>
+    int note3<span class="hljs-comment">;</span>
+    int note4<span class="hljs-comment">;</span>
+</code></pre>
+<p>This method is acceptable, to a point, but becomes cumbersome when we require many more variables (imagine trying to store a sequence of 1000 integer notes, or one second of CD quality audio (2 × 44100 floats)!). Arrays allow us to create any number of variables of the same type in a single statement. For example, an array of integer variables for our four note numbers can be created by the following declaration: </p>
+<pre><code class="lang-cpp"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">array</span>&lt;<span class="hljs-keyword">int</span>, 4&gt; notes;
+</code></pre>
+<p>Each element of the array can be used like any normal variable, but must be accessed using the element index in the correct format. This is achieved by writing the array name followed by an element number (<strong>index</strong>) enclosed within the <strong>square brackets [].</strong> The array syntax for setting each element of the notes array is shown below. </p>
+<pre><code class="lang-cpp">notes[0] = 60; //<span class="hljs-keyword">set</span> the <span class="hljs-keyword">first</span> <span class="hljs-keyword">element</span> <span class="hljs-keyword">to</span> be <span class="hljs-number">60</span>
+notes[<span class="hljs-number">3</span>] = <span class="hljs-number">67</span>; //<span class="hljs-keyword">set</span> the <span class="hljs-keyword">last</span> <span class="hljs-keyword">element</span> <span class="hljs-keyword">to</span> be <span class="hljs-number">67</span>
+</code></pre>
+<p>Note that array indices always start at 0 for the first element and go up to the array’s size minus one. Note that doing the following is invalid.</p>
+<pre><code class="lang-cpp">notes[<span class="hljs-number">4</span>] = <span class="hljs-number">69</span>; <span class="hljs-comment">//ERRROR! out of bounds</span>
+</code></pre>
+<h2 id="general-form">General form</h2>
+<p>The general form of an array declaration is as follows.</p>
+<pre><code class="lang-cpp"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">array</span>&lt;type, size&gt; name;
+</code></pre>
+<pre><code class="lang-cpp"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">array</span>
+</code></pre>
+<p>This is the type specification for creating an array, in C++ arrays belong to the std library and look similar to std::string.</p>
+<pre><code class="lang-cpp">&lt;<span class="hljs-keyword">type</span>, size&gt;
+</code></pre>
+<p>std::array is a type of template class (an advance C++ topic) and so requires some us to use some new syntax. The triangle brackets ( &lt; &gt; ) are used to tell the compiler what kind of array you want. Two arguments are supplied; the first is the <strong>type</strong> which can be any of the data types we have covered so far (int, float, bool etc) but can also contain more complex data types (e.g. classes). The second is the <strong>size</strong> of the array, this is how many elements you want to store.</p>
+<pre><code class="lang-cpp">name<span class="hljs-comment">;</span>
+</code></pre>
+<p>The last part of the array declaration is the <strong>name</strong> of your array. Array names should by convention start with a lower-case letter.</p>
+<p>Note that once an array has been created it can only hold the data types specified from its declaration. For example, it can only hold <strong>ints or floats, not a mix of both.</strong> Also note that once the size of the array is set it cannot be changed. We will cover resizing arrays in the <a href="">next practical</a>.</p>
+<h2 id="size">Size</h2>
+<p>To get the size of an array the following code can be used (shown below). The size function is a class method for the std::array class, and returns the number of elements in the array.</p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">array</span>.<span class="hljs-built_in">size</span>()
+</code></pre>
+<h2 id="exercise-1-creating-our-first-array">Exercise 1: Creating our first array</h2>
+<p>We will now create a simple program using an array to hold a sequence of notes, and play these back in order. To complete this exercise, rearrange the following snippets of code. All code should be placed inside the run() function. Note you will need to use and include your mtof function for this exercise (or use your synth class from last week)</p>
+<pre><code class="lang-cpp"><span class="hljs-number">1.</span>     <span class="hljs-keyword">int</span> note = notes[i]; <span class="hljs-comment">// get element at index 'i'</span>
+<span class="hljs-number">2.</span>     aserveSleep(<span class="hljs-number">500</span>);
+<span class="hljs-number">3.</span>     <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; notes.size(); i++) {
+<span class="hljs-number">4.</span>        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">array</span>&lt;<span class="hljs-keyword">int</span>, 4&gt; notes;
+<span class="hljs-number">5.</span>      }
+<span class="hljs-number">6.</span>     aserveOscillator(<span class="hljs-number">0</span>, mtof(note), <span class="hljs-number">1.0</span>, <span class="hljs-number">1</span>);
+</code></pre>
+<p><strong>Finally, after the declaration of the array but before the for-loop you will need to put values into each element of the array, refer to the previous page if you are unsure of how to achieve this.</strong></p>
+<h2 id="exercise-2-second-array">Exercise 2: Second array</h2>
+<p>Extended the previous exercise to include a second array for storing amplitude values. The static <strong>1.0</strong> value for amplitude inside the call to aserveOscillator (argument 3) should be replaced by the a from this new array. This new array should be called <strong>amps</strong> and be of type <strong>float</strong> and be the same size as the other array. <strong>You should not need to create another for loop</strong>.</p>
+<h2 id="exercise-3-refactoring">Exercise 3: refactoring</h2>
+<p>For this exercise we will be refactoring a badly written program using arrays. You will need to download <a href="../../Code%20Exercises/Tutorial%2010/Exercise%203">Tutorial 10 Exercise 3 code</a>, and copy them into your project overriding the contents of your existing .cpp and .h files.</p>
+<p><strong>Note for this exercise we will be using the IAPSynth class that we built during last weeks practical. You will need to complete last weeks practical before starting this one. You will need to add the IAPSynth class to the top of IAP.h.</strong></p>
+<p>The current program is designed as follows. As a slider is moved and the callback is triggered the first 4 slider values (CC41 – CC44) are checked and their current position stored in 1 of 4 slider variables. These variables are then used as `note’ values to trigger notes in our synth. We therefore have a 4 step step-sequencer. The program should work without error; however, it is inefficient. Follow the steps bellow to refactor this program using an array.</p>
+<ol>
+<li>Remove the 4 slider variable declarations from IAP.h and replace this with a single <strong>std::array</strong> declaration called sliderValues. This array should have 4 elements.</li>
+<li>Inside our CC callback replace each old slider variable to use the sliderValues array.</li>
+<li>Inside our run() function replace each old slider variable to use the sliderValues array.</li>
+</ol>
+<p>Your program should operate as it did previously, however it is not much more concise than the previous version. However, we can still do more!</p>
+<h3 id="part-1">Part 1</h3>
+<ol>
+<li>Inside the our <strong>run()</strong> function create a for-loop that starts at 0 and goes up to the value of sliderValues.size().</li>
+<li>You can now place a single call to <strong>synth.playNote</strong>, and <strong>aserveSleep</strong> inside the for loop.</li>
+<li>Think carefully about how you might access each element of the array.</li>
+</ol>
+<p><strong>Ensure you test your program before moving on!</strong></p>
+<h3 id="part-2">Part 2</h3>
+<ol>
+<li>Remove the switch case structure from the CC callback. </li>
+<li>Then add the following code inside the if-statement</li>
+</ol>
+<pre><code class="lang-cpp"><span class="hljs-attr">sliderValues[cc-41]</span> = value;
+</code></pre>
+<p>Your finished program should operate exactly the same as before but this time be a lot more concise. The process of refactoring is about restructuring existing code so that it is cleaner and more concise without changing its functionality. If you compare the program you had at the start of this exercise with what we have ended up with, you should clearly see the difference.</p>
+<p><strong>Before moving on and saving your solution to code book, ensure that your program is suitability commented.</strong></p>
+<h2 id="exercise-4-8-step-sequencer">Exercise 4: 8-step sequencer</h2>
+<p>It should now be relatively easy to extend our program to use 8 rather than 4 steps. Something that would have been much harder had we used 8 single variables instead of an array. To achieve this:</p>
+<ol>
+<li>Change your <strong>arrayValues</strong> array to be 8 elements in size rather than 4</li>
+<li>Modify the the CC callback accordingly </li>
+</ol>
+<p>By changing only two lines of code we have gone from having a 4-step sequencer to an 8-step sequencer. Using arrays allows our programs to scale very quickly and we end up writing a lot less code.</p>
+<h2 id="exercise-5-amplitude-control">Exercise 5: Amplitude control</h2>
+<p>Add a second array called <strong>rotaryValues</strong>, that get their values from the 8 rotary controls on the impulse keyboard. These values should control the velocity argument of the synth.playNote function call.</p>
+<h2 id="challenge-exercises-extensions">Challenge exercises: Extensions</h2>
+<p>A number of extensions can be added to this program. Feel free to try adding your own features also.</p>
+<ol>
+<li>Before writing the CC’s value into the sliderValues array, scale it so that it has a range between 48 and 72.</li>
+<li>Before passing the sliderValue into the playNote function call, pass it through one of the scale functions we developed last term, therefore creating a more ‘musical’ application.</li>
+<li>Modify the for loop so that it plays in reverse.</li>
+<li>Add an option so that the user can toggle between the loop playing forward and the loop playing backwards.</li>
+</ol>
+
+<a href="/index.html">Return to homepage</a>
+</body>

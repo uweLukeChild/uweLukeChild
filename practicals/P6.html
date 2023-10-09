@@ -1,0 +1,148 @@
+
+<head>
+
+</head>
+
+<body>
+<a href="/index.html">Back to homepage</a>
+
+<h1 id="tutorial-6-functions-ii">Tutorial 6 - Functions II</h1>
+<p>Functions continue to be one of the most important concepts in building larger programs. In this practical we will focus on how to share variables between functions effectively. On successful completion of this practical you will have an understanding of:</p>
+<ol>
+<li>Variable scope</li>
+<li>Memory addresses</li>
+<li>When to declare shared variables in the IAP.h</li>
+</ol>
+<h2 id="getting-started">Getting started</h2>
+<p>Last practical we looked at functions and we will continue to do so in this practical also. <strong>Please ensure you have completed last weeks practical, before attempting this one</strong>. Reload your solution to practical 5 exercise 2: mtof function.</p>
+<h2 id="exercise-1-variable-scope">Exercise 1: Variable scope</h2>
+<p>Add the following code to your IAP.cpp (bellow the run function) replacing the existing note callback function. 
+Remember to uncomment the modwheel callback function from IAP.h </p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">void</span> IAP::callbackModWheelMoved (<span class="hljs-keyword">int</span> value)
+{
+  <span class="hljs-keyword">int</span> wave = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">if</span> (value &gt;= <span class="hljs-number">64</span>)
+    {
+    wave = <span class="hljs-number">1</span>;
+  }
+    <span class="hljs-keyword">else</span> 
+    {
+      wave = <span class="hljs-number">0</span>;
+    }
+}
+</code></pre>
+<pre><code class="lang-cpp"><span class="hljs-keyword">void</span> IAP::callbackNoteReceived  (<span class="hljs-keyword">int</span> note, <span class="hljs-keyword">int</span> velocity, <span class="hljs-keyword">int</span> channel)
+{
+  <span class="hljs-keyword">int</span> wave = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">if</span> (velocity &gt; <span class="hljs-number">0</span>)
+    {
+    <span class="hljs-keyword">float</span> frequency = mtof(note);
+    aserveOscillator(<span class="hljs-number">0</span>, frequency, <span class="hljs-number">1.0</span>, wave);
+  }
+  <span class="hljs-keyword">else</span>
+    {
+    aserveOscillator(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+  }
+}
+</code></pre>
+<p>This code is designed to switch between a sine wave and a square wave depending on the position of the modwheel. Run the program and check that this works correctly.</p>
+<h1 id="error">Error</h1>
+<p>If we look closely at our program, we can see that we have two variables with the same name but they not do refer to same variable. To verify this, we will print the address of the variable. The address of a variable is it’s location in the computers RAM (random access memory). Every variable in C++ has a unique memory address.</p>
+<h1 id="exercise-2-printing-address">Exercise 2: Printing address</h1>
+<p>The &amp; symbol is used to get the address of a variable. 
+To print the address of the modwheel callback <code>wave</code> variable:</p>
+<pre><code class="lang-cpp">  <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Address of CallbackModWheelMoved wave : "</span> &lt;&lt; &amp;wave &lt;&lt; <span class="hljs-string">"\n"</span>;
+</code></pre>
+<p>Modify your code to print the address of BOTH of the variables named <code>wave</code>, in both <code>callbackModWheelMoved</code> and <code>callbackNoteReceived</code>.</p>
+<p>Your output should look something like this (remember to move both the modwheel and press a key!).
+The address of each wave variable is different.</p>
+<pre><code class="lang-cpp">Address <span class="hljs-keyword">of</span> callbackModWheelMoved wave: <span class="hljs-number">0</span>x1013d2990
+Address <span class="hljs-keyword">of</span> callbackNoteReceived wave: <span class="hljs-number">0</span>x1013d2988
+</code></pre>
+<h2 id="exercise-3-shared-variables">Exercise 3: Shared variables</h2>
+<p>To fix this issue we need to add a <strong>shared variable</strong> to our IAP.h file. Shared variables are variables that can be accessed between functions. Shared variables also retain their value while the program continues to run. Navigate to our IAP.h file and add a variable called <strong>wave</strong> of type <strong>int</strong>. Place this under the SHARED VARIABLES label.</p>
+<pre><code class="lang-cpp"><span class="hljs-comment">//-------------------------------------------------------------</span>
+<span class="hljs-comment">// SHARED VARIABLES</span>
+<span class="hljs-keyword">int</span> wave = <span class="hljs-number">0</span>;
+</code></pre>
+<p>Go back to our IAP.cpp file and delete both occasions where our old int wave variables were being declared. Re-run our program and check to ensure that our wave type switch code is working correctly. </p>
+<p>If you still have the address printing code, you should also see the same address value is now printed.</p>
+<pre><code class="lang-cpp">Address <span class="hljs-keyword">of</span> callbackModWheelMoved wave: <span class="hljs-number">0</span>x1013d2988
+Address <span class="hljs-keyword">of</span> callbackNoteReceived wave: <span class="hljs-number">0</span>x1013d2988
+</code></pre>
+<p><img src="../images/sharedvariables.png" height=300/></p>
+<p>Note that in both functions they are now sharing the same single variable wave.</p>
+<h2 id="exercise-4-fix-noteoff-we-have-a-problem-">Exercise 4: Fix noteoff - We have a problem!</h2>
+<p>For a number of weeks, you will have encountered a bug with the monophonic synths that we have been building. </p>
+<p>If you press and hold a note with your left hand and then a second note with your right hand, you will notice that the oscillator is stolen by the most recently pressed note - the right hand note. If you now release the left hand note the oscillator should stop, even though the right hand note is still pressed. </p>
+<p>In case it helps to visualise, below is an annotated screenshot of a pianoroll showing the events descried in the paragraph above.</p>
+<p><img src="../images/FixNoteOff-pianoroll.png" /></p>
+<h2 id="exercise-4-fix-noteoff-a-possible-solution">Exercise 4: Fix noteoff - A possible solution</h2>
+<p>The cause of the problem is that our iapProj program cannot (yet) &#39;remember&#39; that a particular note is being held when a note is released.  The iapProj simply switches off the oscillator if the note velocity is zero.</p>
+<p>The desired behaviour is that the oscillator should be switched off only if the velocity is zero and the released note number matches the &#39;remembered&#39; note being played by the oscillator. </p>
+<p>We can fix this by <em>adding a shared variable</em> to remember the last note number pressed between calls to callbackNoteReceived(). </p>
+<p>We will then <em>modify our if statement</em> inside the callbackNoteReceived(), such that the shared variable is checked to see if it matches the note number of the ‘note off’ message. </p>
+<h2 id="exercise-4-fix-noteoff-let-s-fix-it-">Exercise 4: Fix noteoff - Let&#39;s fix it!</h2>
+<p>The steps to complete this are as follows: </p>
+<ol>
+<li>Create a new shared variable in the IAP.h file called currentNote and set its initial value to be -1</li>
+<li>When the oscillator is switched on (inside the callback) set currentNote to be equal to the note number.</li>
+<li>When Note Off messages are received you can compare the Note Off number with the currentNote variable and if it matches you switch the oscillator off and set the currentNote back to -1, otherwise you leave it on. You will need to modify the <em>else</em> statement in the callback to use an <em>else if</em></li>
+</ol>
+<h2 id="debug-exercise">Debug Exercise</h2>
+<p>For each of these functions give a single reason for why each one is incorrect. If you are unsure have a look back at examples from last weeks practical. </p>
+<p><strong>You can assume that the functions have been declared correctly inside IAP.h</strong></p>
+<h3 id="1-">1:</h3>
+<pre><code class="lang-cpp"><span class="hljs-keyword">void</span> IAP::getFrequencyValue ()
+{
+    <span class="hljs-keyword">float</span> freq;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Please enter a frequency"</span>;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cin</span> &gt;&gt; freq;
+    <span class="hljs-keyword">return</span> freq;
+}
+</code></pre>
+<h3 id="2-">2:</h3>
+<pre><code class="lang-cpp"><span class="hljs-keyword">void</span> IAP::calculateSum (<span class="hljs-keyword">int</span> a, <span class="hljs-keyword">int</span> b);
+{
+    <span class="hljs-keyword">int</span> result = a+b + a*b;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Result: "</span> &lt;&lt; result &lt;&lt; <span class="hljs-string">"\n"</span>;
+}
+</code></pre>
+<h3 id="3-">3:</h3>
+<pre><code class="lang-cpp"><span class="hljs-keyword">void</span> IAP::playNote (<span class="hljs-keyword">float</span> frequency, <span class="hljs-keyword">float</span> amplitude)
+{
+    aserveOscillator(<span class="hljs-number">0</span>, frequency, amp, <span class="hljs-number">0</span>);
+}
+</code></pre>
+<h3 id="4-">4:</h3>
+<pre><code class="lang-cpp"><span class="hljs-keyword">float</span> IAP::tuneNote (<span class="hljs-keyword">float</span> frequency)
+
+    frequency = frequency * <span class="hljs-number">1.5123</span>;
+    <span class="hljs-keyword">return</span> frequency;
+}
+</code></pre>
+<p><em>The most common programming mistakes, are: missing brackets, missing braces, spelling errors, and semi-colons where they are not supposed to be.</em></p>
+<h2 id="challenge-exercise-pitch-bend">Challenge Exercise: Pitch bend</h2>
+<p>Using what we have learned so far, you need to add the following code to your project. Think carefully about where each piece of code needs to be placed. You are adding a pitch bend feature that will control the frequency of the oscillator in real time.</p>
+<pre><code class="lang-cpp"><span class="hljs-number">1.</span>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">callbackPitchbendWheelMoved</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> value)</span></span>;
+<span class="hljs-number">2.</span>    <span class="hljs-keyword">void</span> IAP::callbackPitchbendWheelMoved (<span class="hljs-keyword">int</span> value)
+    {
+
+    }
+<span class="hljs-number">3.</span>    <span class="hljs-keyword">int</span> pbValue = <span class="hljs-number">0</span>;
+<span class="hljs-number">4.</span>    pbValue = (value / <span class="hljs-number">16383.0</span>) * <span class="hljs-number">24</span> - <span class="hljs-number">12.0</span>;
+<span class="hljs-number">5.</span>    <span class="hljs-keyword">float</span> frequency = mtof(note + pbValue);
+<span class="hljs-number">6.</span>    <span class="hljs-keyword">float</span> frequency = mtof(currentNote + pbValue);
+<span class="hljs-number">7.</span>    aserveOscillator(<span class="hljs-number">0</span>, frequency, <span class="hljs-number">1.0</span>, wave);
+</code></pre>
+<p>You may notice that the pitchbend function steps, rather than glides smoothly, have a look through the code and see at what point integer arithmetic is being used, when floating point arithmetic should be used instead.</p>
+<h2 id="important-material">Important Material</h2>
+<p>Understanding of the following will be assumed in next weeks practical: </p>
+<ol>
+<li>When to place variables inside the IAP.h file</li>
+<li>How to share data between functions</li>
+<li>Variable scope</li>
+</ol>
+
+<a href="/index.html">Return to homepage</a>
+</body>

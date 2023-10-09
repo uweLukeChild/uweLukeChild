@@ -1,0 +1,117 @@
+<head>
+
+</head>
+
+<body>
+<a href="/index.html">Back to homepage</a>
+<h1 id="tutorial-8-flow-control-loops">Tutorial 8 – Flow Control: Loops</h1>
+<p>In this practical you will learn how to control program flow using three different types of loops: </p>
+<ol>
+<li>the <strong>while</strong> loop.</li>
+<li>the <strong>do-while</strong> loop. </li>
+<li>the <strong>for</strong> loop </li>
+</ol>
+<h2 id="while">While</h2>
+<p>In previous sessions the large majority of exercises have employed a ‘never-ending’ while(true) loop. Last week we learned that it was possible to control the number of times the loop cycled with a condition in place of the true keyword. </p>
+<p>From now on, you should only include loops in your program if you need one, and it should <strong>always</strong> be controlled by a conditional statement, such that it is possible to exit the program in some way. </p>
+<h2 id="exercise-1-high-frequency-test">Exercise 1: High frequency test</h2>
+<p>Write a program that will test the frequency range of your hearing. To do this you should set up a while loop to sweep the frequency of a sinusoidal oscillator from 0 - 20,000Hz. The program should produce a frequency sweep that lasts approximately 20 seconds, while printing the current frequency. The program should exit when the oscillator reaches a frequency of 20,000Hz. <strong>Please ensure you are using headphones for this test!</strong></p>
+<p>The steps to achieve this are as follows: (you can write all code in the your IAP::run() function)</p>
+<ol>
+<li>Initialise frequency variable</li>
+<li>Enter while loop with condition frequency &lt; 20000</li>
+<li>Set oscillator to frequency variable value</li>
+<li>Display frequency value</li>
+<li>Add 50 to frequency value</li>
+</ol>
+<p><em>This program will only provide an indication of your hearing range, results will not be accurate as the apparatus in labs is quite limited.</em></p>
+<h2 id="exercise-2-high-frequency-test-2">Exercise 2: High Frequency Test 2</h2>
+<p>You may have noticed in the last test that it is difficult to see the exact frequency at which the sweep is no longer audible. Extend the last program such that the sweep stops when the modulation wheel is moved from its zero position. You should now have two conditions inside your while loop. Think carefully about which <strong>logical</strong> operator to use.</p>
+<p>Modify the while loop condition to achieve this. You will need to set up and use the modwheel callback. You should create a shared variable that is written to by the modwheel callback and then read inside the while loop condition. Run the test with your eyes closed and find out the highest frequency that you can hear. </p>
+<h2 id="do-while">Do while</h2>
+<p>In the conventional while loop, the test condition appears at the beginning of the loop structure. The general form of the while loop is indicated below: </p>
+<p><img src="../images/while.png" height=300/></p>
+<p>An alternative looping mechanism is the do-while construction, which operates in exactly the same way as the while loop only the test condition is positioned at the end of the loop, rather than at the beginning. The general form of the do while loop is as follows. </p>
+<p><img src="../images/dowhile.png" height=300/></p>
+<p>It is more appropriate to use a do while rather than a while loop when the outcome of the condition is controlled by the statements within the loop. Or that you need to always do something once regardless of the condition.</p>
+<p>Consider the example where a program repeats a set of statements that read a note character (‘A’-‘G’) from the QWERTY keyboard and play a tone at the appropriate frequency. The program should exit the loop if the user enters the character ‘x’.</p>
+<p>As the ‘x’ can only be detected after the input character has been read, it would be appropriate to use to use a do-while loop, such that the character is read before the condition is tested. If a while loop were used instead, the character variable in which the note is stored will be tested in the loop condition before it has been given a value by the program user. </p>
+<h2 id="exercise-3-high-frequency-test-3">Exercise 3 : High Frequency Test 3</h2>
+<p>Modify the solution to the exercise High Frequency Test 2 such that at the end of the sweep the user is asked if they would like to repeat the test. The program should then read a <strong>string</strong>. If the string is <strong>‘yes’</strong> the sweep should repeat, otherwise the program should exit. To do this you will need to place the code that implements the sweep within a second loop which checks for the ‘yes’ character.  A general template for this program looks like so:</p>
+<pre><code class="lang-coo"><span class="hljs-keyword">do</span> 
+{
+  //<span class="hljs-keyword">Start</span> <span class="hljs-keyword">of</span> frequency <span class="hljs-keyword">test</span>
+  <span class="hljs-keyword">while</span> () 
+  {
+
+  }
+  //<span class="hljs-keyword">End</span> <span class="hljs-keyword">of</span> frequency <span class="hljs-keyword">test</span>
+
+  //ask <span class="hljs-keyword">user</span> <span class="hljs-keyword">if</span> they would <span class="hljs-keyword">like</span> <span class="hljs-keyword">to</span> <span class="hljs-keyword">repeat</span>
+
+} <span class="hljs-keyword">while</span> (  );
+</code></pre>
+<h2 id="for-loops">For Loops</h2>
+<p>The for keyword provides the third looping construction in the C++ programming language. As well as the end condition, the for loop contains additional information about the parameters of the loop. The general form is as follows (note the following code is not valid C++ code, it just provides the general form of a for loop, see the later example for the complete syntax): </p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">for</span> (initialisation; <span class="hljs-keyword">condition</span>; update) 
+{
+   <span class="hljs-keyword">do</span> something;
+}
+</code></pre>
+<ul>
+<li>The <strong>initialization</strong> statement is often used to initialize a variable (i.e. a counter). Think of this as what value do I want to start my loop at.</li>
+<li>The <strong>condition</strong> statement sets the condition that controls whether the loop should continue or stop, this is normally a conditional test to see whether the counting variable has reached the value you wish to count to. </li>
+<li>The <strong>update</strong> statement controls how the value of the counting variable is modified for each cycle of the loop. </li>
+</ul>
+<p>For example, the following code fragment would produce the numbered sequence 0-4</p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> <span class="hljs-keyword">count</span> = <span class="hljs-number">0</span>; <span class="hljs-keyword">count</span> &lt; <span class="hljs-number">5</span>; <span class="hljs-keyword">count</span> = <span class="hljs-keyword">count</span> + <span class="hljs-number">1</span>) 
+{
+   std::cout &lt;&lt; <span class="hljs-keyword">count</span> &lt;&lt; <span class="hljs-string">"\n"</span>;
+}
+</code></pre>
+<p>The process is as follows: </p>
+<ol>
+<li>The initialisation statement sets the start value for the variable count. Initializes count to zero in the above example. Note that we can declare variables here for use in our loop. </li>
+<li>The condition is tested to check the value of the counting variable to establish whether the loop should continue or exit. In this example the loop continues while count is less than 5.</li>
+<li>If the outcome of condition is true, the statements enclosed within the braces of the for loop are executed.</li>
+<li>The value of the counting variable is then changed by the update statement. In the above example the value of count is increased by one.</li>
+<li>Steps 2 - 4 then repeat until the outcome of the condition (step 2) is found to be false.</li>
+</ol>
+<h2 id="exercise-4-for-loop-midi-frequency-table">Exercise 4: For loop MIDI – Frequency Table</h2>
+<p>Write a program that prints out a table of MIDI note numbers and their corresponding frequencies in Hz. </p>
+<p>MIDI note numbers are encoded into 7-bits, which gives the note range 0 to 127 (C-1 to G9). Use a for loop to count from 0 up to and including 127, printing the note number and converted frequency value at each cycle of the loop (recall the formula for converting note numbers to frequencies from earlier practical’s).  You may wish to use the mtof() function.</p>
+<p>Once you have this working, modify the loop so that the table is displayed in descending order, from 127 to 0. </p>
+<h2 id="challenge-exercise-making-a-saw-wave-from-sine-waves">Challenge Exercise: Making a saw wave from sine waves</h2>
+<p>Load the example <a href="../../Code%20Exercises/Tutorial%208/Exercise%205">Tutorial 08 Exercise 5 code</a> into your IAP.h and IAP.cpp files.</p>
+<p>We will now add two for loops to our monophonic synthesizer to artificially create a low-fi saw wave oscillator from a series of sine waves. To achieve this <strong>rearrange</strong> and <strong>add</strong> the following code to the note on branch of the if statement inside the note callback function.</p>
+<pre><code class="lang-cpp"><span class="hljs-number">1.</span>    <span class="hljs-type">float</span> amplitude = <span class="hljs-number">1.0</span> / (counter + <span class="hljs-number">1</span>);
+
+<span class="hljs-number">2.</span>    <span class="hljs-type">float</span> oscFreq = frequency * (counter + <span class="hljs-number">1</span>);
+
+<span class="hljs-number">3.</span>    aserveOscillator(counter, oscFreq, amplitude, <span class="hljs-number">0</span>);
+
+<span class="hljs-number">4.</span>    for (int counter = <span class="hljs-number">0</span>; counter &lt; <span class="hljs-number">16</span>; counter++) 
+
+   {
+
+<span class="hljs-number">5.</span>    <span class="hljs-type">float</span> frequency = mtof(note);
+
+<span class="hljs-number">6.</span>    }
+</code></pre>
+<p><strong>Add a separate for loop to the else condition for turning off all 16 oscillators.</strong></p>
+<p>for more information on additive synthesis see the following links:</p>
+<p><a href="https://www.youtube.com/watch?v=K3D1fPjWAnc">Video 1</a></p>
+<p><a href="https://www.youtube.com/watch?v=YsZKvLnf7wU">Video 2</a></p>
+<h2 id="important-material">Important Material</h2>
+<p>In general a for loop is the most commonly used loop, and you are far more likely to see a while loop than a do-while.</p>
+<p>Knowledge of the following will be assumed in the next practical: </p>
+<ol>
+<li>while loops.</li>
+<li>do while loops.</li>
+<li>for loops. </li>
+</ol>
+<h2 id="extra-material">Extra material</h2>
+<p>If you have finished this practical within the allocated time, then please complete the number conversion practical found on blackboard. It can be found in Learning materials -&gt; Extra Practical’s.</p>
+
+<a href="/index.html">Return to homepage</a>
+</body>

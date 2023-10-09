@@ -1,0 +1,195 @@
+
+<head>
+
+</head>
+
+<body>
+<a href="/index.html">Back to homepage</a>
+
+<h1 id="tutorial-4-flow-control">Tutorial 4 – Flow Control</h1>
+<p>In this practical we will learn how to control program flow using &#39;if&#39; statements. By the end of this practical you should understand: </p>
+<ol>
+<li>How to set up and use a simple if statement.</li>
+<li>How to construct conditional expressions using comparison operators.</li>
+<li>How to set up and use simple if..else statements.</li>
+<li>How to set up and use nested if..else if statements.</li>
+</ol>
+<h2 id="flow-control">Flow Control</h2>
+<p>So far we have explored event driven programming, but we have used the same code each time an event happens. Often, you&#39;ll want to design programs that react to events in different ways depending on <em>conditions</em>. For example, in real life we turn lights on when outside is dark, and turn them off when outside is light. We can represent this in code using if statements.</p>
+<p>The general form of the basic if statement is as follows: </p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">if</span> (condition) 
+{ 
+<span class="hljs-regexp">//</span> <span class="hljs-keyword">do</span> this code
+}
+</code></pre>
+<p>If the condition is true then the statements enclosed by braces are executed, and if the condition is false the statements are skipped. </p>
+<h2 id="conditions">Conditions</h2>
+<p>Comparison operators may be used to construct a <em>conditional</em> expression. For example, we may wish to display a warning if the temperature of a boiler exceeds 99 degrees centigrade. If the current temperature was stored in a variable called &#39;temperature&#39; the corresponding if statement would be as follows: </p>
+<p><strong>The below code is for example only - do not copy this into your iapProj</strong></p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">if</span>(temperature &gt; <span class="hljs-number">99</span>)
+   {
+       <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Warning boiler is BOILING\n"</span>;
+   }
+</code></pre>
+<p>Similarly, if a message was to be displayed when temp was less than or equal to 0 degrees centigrade: </p>
+<pre><code class="lang-cpp">    <span class="hljs-keyword">if</span>(temperature &lt;= <span class="hljs-number">0</span> )
+    {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Warning boiler is FREEZING\n"</span>;
+    }
+</code></pre>
+<p>It is important to note that should the temperature be between 1 and 99 then no message would get printed.</p>
+<p>A complete list of comparison operators is provided bellow. Sometimes these are called &quot;relational operators&quot; because they determine the relationship between two values.</p>
+<table>
+<thead>
+<tr>
+<th>Operator</th>
+<th>Meaning</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&gt;</td>
+<td>Greater than</td>
+<td>X &gt; Y</td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>Less than</td>
+<td>X &lt; Y</td>
+</tr>
+<tr>
+<td>&gt;=</td>
+<td>Greater than or equal to</td>
+<td>X &gt;= Y</td>
+</tr>
+<tr>
+<td>&lt;=</td>
+<td>Less then or equal to</td>
+<td>X &lt;= Y</td>
+</tr>
+<tr>
+<td>==</td>
+<td>Equal to (different to assignment =)</td>
+<td>X == Y</td>
+</tr>
+<tr>
+<td>!=</td>
+<td>Not equal to</td>
+<td>X != Y</td>
+</tr>
+</tbody>
+</table>
+<p>Variables or literals (explicit values) may be used within a conditional expression.
+In the examples above, the variable &#39;temp&#39; was used with the literal &#39;0&#39; and the literal &#39;99&#39;.</p>
+<h2 id="exercise-1-selective-monophonic-synth">Exercise 1: Selective monophonic synth</h2>
+<p>Reload your solution to exercise 3 from practical 3. Ensure that you use both the <code>IAP.h</code> and <code>IAP.cpp</code> files. </p>
+<p><strong>If you have not yet completed practical 3, please ensure you do.</strong></p>
+<p>Modify your monophonic synthesiser <em>with an if statement</em> such that an oscillator is played only when the note is above 60.</p>
+<h2 id="what-else-">What else?</h2>
+<p>Often it is desirable to perform one action when a condition is true and another when it is false. For example, when withdrawing money from a cash machine, the underlying program will check that there are sufficient funds in the account before issuing cash, otherwise an error message is displayed. </p>
+<p>The general form of the basic if..else statement is as follows: </p>
+<p><strong>The below code is for example only - do not copy this into your iapProj</strong></p>
+<pre><code class="lang-cpp">    <span class="hljs-meta">if</span>(condition)
+    {
+        //<span class="hljs-meta">code</span> <span class="hljs-keyword">block </span><span class="hljs-number">1</span>
+    }
+    <span class="hljs-meta">else</span>
+    {
+        //<span class="hljs-meta">code</span> <span class="hljs-keyword">block </span><span class="hljs-number">2</span>
+    }
+</code></pre>
+<p>If the outcome of the condition is true (i.e. not zero) then code block 1 will be executed. If the condition is false then code block 2 will be executed. </p>
+<h2 id="exercise-2-monophonic-synth-on-off-state">Exercise 2:  Monophonic synth on/off State</h2>
+<p>Building on exercise 1. Use an if-else statement to switch the oscillator on if the velocity received is above 0, else switch the oscillator off. You will no longer need the if statement from exercise 1.</p>
+<p> The flow chart for this is given below (T means true, F means false):</p>
+<p><img src="../images/if_else.png" height=300/></p>
+<h3 id="if-and-else-if">If and else if</h3>
+<p>Sometimes it is desirable to check for one of multiple possible conditions. For example, you may create a system that classifies university degree results from an overall percentage. A flow chart for this selection structure is provided below. Note that only one of these outputs is choosen.</p>
+<p><img src="../images/if_else_else.png" height=300/></p>
+<p>This is typically called an &quot;if..else..if statement&quot; or an &quot;else if statement&quot; because the general form of the code is as follows: </p>
+<pre><code class="lang-cpp">    <span class="hljs-meta">if</span>(condition1)
+    {
+        //<span class="hljs-meta">code</span> <span class="hljs-keyword">block </span><span class="hljs-number">1</span>
+    }
+    <span class="hljs-meta">else</span> <span class="hljs-meta">if</span> (condition2)
+    {
+        //<span class="hljs-meta">code</span> <span class="hljs-keyword">block </span><span class="hljs-number">2</span>
+    }
+    <span class="hljs-meta">else</span>
+    {
+        //<span class="hljs-meta">code</span> <span class="hljs-keyword">block </span><span class="hljs-number">3</span>
+    }
+</code></pre>
+<p>If the outcome of condition 1 is true then code block 1 is executed. If the outcome of condition 1 is false then condition 2 is tested and if found to be true then code block 2 is executed, if both condition 1 and condition 2 are false then code block 3 is executed. <strong>Only one code block is executed.</strong> </p>
+<h2 id="exercise-3-sampler">Exercise 3: Sampler</h2>
+<p>To demonstrate using if/else if/else we will construct a basic drum pad sampler.</p>
+<p><a href="../../Code%20Exercises/Tutorial%204/Exercise%203">Download both files</a>, and copy the contents into both <code>IAP.cpp</code> and <code>IAP.h</code> files.</p>
+<p>You will see one new line of code that we have not seen before inside our run() function.</p>
+<pre><code class="lang-cpp">aserveLoadDefaultSounds()<span class="hljs-comment">;</span>
+</code></pre>
+<p>This call to Aserve will ask it to load up its default sample sounds.
+The steps to complete this exercise are as follows:</p>
+<ol>
+<li>Write code that prints the incoming note number, to find out which note numbers each drum pad produces.</li>
+<li>Add an if statement to trigger sample playback, you must write the correct note number on the right hand side of the == operator.</li>
+</ol>
+<pre><code class="lang-cpp"><span class="hljs-keyword">if</span> <span class="hljs-comment">(note == )</span> {
+  aservePlaySample<span class="hljs-comment">(0, 1.0)</span>;
+}
+</code></pre>
+<ol>
+<li>Next add &quot;else if&quot; statements for 3 other pads</li>
+<li>In total you should have 1 if statement, followed by 3 else if statements. You may add an optional else statement to print a help message telling the user which pads to press if you wish. </li>
+</ol>
+<p>aservePlaySample() is used to trigger sample playback in Aserve. The first argument specifies the sample channel to playback. The second argument is the volume to play the sample at, just like the oscillators it has a range from 0 to 1.0. There are 4 channels, starting with 0 and ending with 3 inclusively. Calling aservePlaySample(4, 1.0) is not valid.</p>
+<p>Once you have finished this exercise you will find that the sample will trigger on both pushing the pad down and releasing it. Lets fix this, but first we need to learn one more concept.</p>
+<h2 id="nested-if-statements">Nested if statements</h2>
+<p>On occasions were a more complex decision making process is required, we can place if structures inside other if structures. This is called &quot;nesting&quot;. </p>
+<p>For example, you might arrange an if statement (in your note received callback) for a solo sound and a bass line sound, nested inside another if statement to check if keys are pushed or released.</p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">if</span> (velocity &gt; <span class="hljs-number">0</span> )  <span class="hljs-comment">// key is pushed?</span>
+{
+  <span class="hljs-keyword">if</span> (note &gt; <span class="hljs-number">60</span>)    <span class="hljs-comment">// which key?</span>
+  {
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Solo time - square wave oscillator! \n"</span>;
+  }
+  <span class="hljs-keyword">else</span> 
+  {
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Bass line - sine wave oscillator! \n"</span>;
+  }
+}
+<span class="hljs-keyword">else</span>  <span class="hljs-comment">// key is released</span>
+{
+  <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Silence please! \n"</span>;
+}
+</code></pre>
+<h2 id="exercise-4-fixing-the-drum-sampler">Exercise 4: Fixing the drum sampler</h2>
+<p>The drum sampler has a deliberate error. The code we&#39;ve written so far will trigger sample playback when a pad is pushed and when a pad is released.</p>
+<p>Your drum sampler should <strong>only trigger samples when a pad is pushed down</strong>. </p>
+<p>To fix our drum sampler you need to apply a similar logic to the section above.</p>
+<h2 id="debug-challenge-exercise">Debug &amp; Challenge Exercise</h2>
+<p>Open up the <a href="../../Code%20Exercises/Tutorial%204/Debug">debug folder</a> for this practical. </p>
+<ol>
+<li>Click the debug folder link above, download the files.</li>
+<li>Replace your iapProj <code>IAP.cpp</code> and <code>IAP.h</code> with the files you just downloaded.</li>
+<li>Fix the code so that it runs correctly. </li>
+</ol>
+<p>The provided debug code <strong>should be</strong> a basic monophonic synth, but there are problems to fix The issues include typos, numerical errors, out of range numbers and others. Make sure you save your solution for this to CodeBook.</p>
+<h2 id="important-material">Important Material</h2>
+<p>Next week’s practical will assume knowledge of the following.</p>
+<ol>
+<li>Simple if statements.</li>
+<li>Conditional expressions with comparison operators.</li>
+<li>Simple if..else statements. </li>
+<li>Nested if..else if statements. </li>
+<li>Trigger samples with Aserve</li>
+</ol>
+<h2 id="videos">Videos</h2>
+<p>The following videos may help during this session:</p>
+<h3 id="aserve-programming-3-sample-playback">Aserve Programming 3 - sample playback</h3>
+<p><a href="http://www.youtube.com/watch?v=3wzw3ZkkdVM"><img src="http://img.youtube.com/vi/3wzw3ZkkdVM/0.jpg" alt="IMAGE ALT TEXT HERE"></a></p>
+<h3 id="if-statements">If statements</h3>
+<p><a href="http://www.youtube.com/watch?v=dvdHsb7Kndk"><img src="http://img.youtube.com/vi/dvdHsb7Kndk/0.jpg" alt="IMAGE ALT TEXT HERE"></a></p>
+
+<a href="/index.html">Return to homepage</a>
+</body>

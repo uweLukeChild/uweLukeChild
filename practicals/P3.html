@@ -1,0 +1,170 @@
+
+<head>
+
+</head>
+
+<body>
+<a href="/index.html">Back to homepage</a>
+
+<h1 id="tutorial-3-processing-midi-input">Tutorial 3 – Processing MIDI input</h1>
+<p>In this practical we will focus on processing MIDI input data, and building our first synthesizer. By the end of this practical you should have knowledge of:</p>
+<ol>
+<li>Callback functions.</li>
+<li>Aserve filters.</li>
+<li>MIDI note numbers and note frequencies.</li>
+</ol>
+<h2 id="callbacks">Callbacks</h2>
+<p>In computer program design we have two opposing principles for dealing with input. Either continuously check if something has changed (known as <em>polling</em>). Or we can set things up to alert us when something has changed (we call this second method a <em>callback</em>).  </p>
+<p>Previously we have used <strong>std::cin</strong> to wait for the user to enter some text that we could then process and display. This input method is sometimes called &quot;blocking&quot; or &quot;busy waiting&quot; - because the program cannot proceed until input is complete.</p>
+<p>In this exercise we will use a <em>callback</em> to be alerted when MIDI information is received. This is sometimes called &quot;interrupt driven&quot; or &quot;event driven&quot; input - because our program can be interrupted by an event (e.g. someone pushing a MIDI key) to react accordingly. </p>
+<p>Programs with event driven input do not need to execute sequentially. That is to say, each section of the code deals with different inputs (QWERTY keyboard, MIDI keyboard, mouse, audio, touch, etc) and the flow of the actual program when it is running can jump between different sections as necessary.</p>
+<h2 id="exercise-1-adding-a-callback">Exercise 1: Adding a callback</h2>
+<p>To add a callback to the IAPproj template, we need to make changes in <strong>both</strong> the IAP.h file and in the IAP.cpp file. Let&#39;s deal with the IAP.cpp file first.</p>
+<ol>
+<li>Select the IAP.cpp file for editing</li>
+<li>Add a busy-waiting loop inside IAP::run(), between the opening <strong>{</strong> and closing braces <strong>}</strong>. Your complete IAP::run() function should look like this.</li>
+</ol>
+<pre><code class="lang-cpp"><span class="hljs-keyword">void</span> IAP::run() 
+{
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) 
+    {
+           aserveSleep(<span class="hljs-number">1000</span>);
+    }
+}
+</code></pre>
+<ol>
+<li>Keep the IAP.cpp file selected for editing</li>
+<li>Add the following block of code <strong>under</strong> IAP::run(), <strong>after the last closing brace }</strong></li>
+</ol>
+<pre><code class="lang-cpp"><span class="hljs-keyword">void</span> IAP::callbackNoteReceived (<span class="hljs-keyword">int</span> note, <span class="hljs-keyword">int</span> velocity, <span class="hljs-keyword">int</span> channel)
+{
+       <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Note Received: "</span> &lt;&lt; note;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt;  <span class="hljs-string">" Velocity: "</span> &lt;&lt; velocity &lt;&lt; <span class="hljs-string">"\n"</span>;
+}
+</code></pre>
+<p><strong>Make sure you type this code exactly, and that you&#39;ve understood where it should be written in the IAP.cpp file.</strong></p>
+<p>Now let&#39;s deal with the IAP.h file.</p>
+<ol>
+<li>Select the IAP.h file for editing</li>
+<li>Find the line <strong><em>callbackNoteRecived</em></strong> in IAP.h </li>
+<li>Remove the two // characters (single line comment) at the start</li>
+</ol>
+<pre><code class="lang-cpp">//<span class="hljs-built_in">void</span> callbackNoteReceived (<span class="hljs-built_in">int</span> note, <span class="hljs-built_in">int</span> velocity, <span class="hljs-built_in">int</span> channel);
+</code></pre>
+<p>Should now look like:</p>
+<pre><code class="lang-cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">callbackNoteReceived</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> note, <span class="hljs-keyword">int</span> velocity, <span class="hljs-keyword">int</span> channel)</span></span>;
+</code></pre>
+<h2 id="exercise-1-adding-a-callback-time-to-test-">Exercise 1 - Adding a callback - time to test!</h2>
+<p>Ensure that Aserve is open before running your program in Xcode.
+When you push keys on either the virtual keyboard inside Aserve, or on the physical Impulse keyboard, the console window of the IAPproj program will show information about which key is being pressed.</p>
+<p>You may wonder how our program can print values to the console if our main IAP::run() function is sleeping continuously. This is because we now have two threads going on at once. A technical definition of threads is beyond the scope of IAP - but we cover them in more detail in later years.</p>
+<p>Part of our program is dealing with incoming MIDI, and the other part (our run loop) is free to do other things. In future we will use IAP::run() to process data and text input, and we will use callback functions such as callbackNoteReceived() for dealing with MIDI input.</p>
+<p>Let’s look in more detail at the function we have just used. The first part of this is referred to as the return datatype (1), however will we not worry about this until the next practical. (2) refers to ownership (or namespace), again will not worry about this until future practicals, but for now ensure that this is added. (3) Is the name of our callback function, these must be typed exactly as they appear, other callback functions have similar names (i.e. for mod wheel). Finally, (4) is the parameters of our callback function, these are the pieces of data passed to us for processing.</p>
+<pre><code class="lang-cpp">(<span class="hljs-number">1</span>) <span class="hljs-keyword">void</span> (<span class="hljs-number">2</span>) IAP:: (<span class="hljs-number">3</span>) callbackNoteReceived (<span class="hljs-number">4</span>) (<span class="hljs-keyword">int</span> note, <span class="hljs-keyword">int</span> velocity, <span class="hljs-keyword">int</span> channel)
+</code></pre>
+<p>Inside our note received function we simply print the values we receive. Do not worry if you do not fully grasp this concept yet.</p>
+<h2 id="exercise-2-printing-values-for-octave-and-pitch">Exercise 2: Printing Values for Octave and Pitch</h2>
+<p>Inside our note callback we want to print two more useful pieces of information. We can use the following formulae to work out pitch and octave from the note number. The below is <strong>not</strong> C++ code... but it&#39;s close.</p>
+<pre><code class="lang-cpp"><span class="hljs-attr">octave</span> = note / <span class="hljs-number">12</span>
+<span class="hljs-attr">pitch</span> = note % <span class="hljs-number">12</span>
+</code></pre>
+<p> Your task now is to work out how to convert this to C++ code and print the values out inside our callback function. Add your code underneath the existing <strong>std::cout</strong> statements.</p>
+<h2 id="exercise-3-our-first-monophonic-synthesizer">Exercise 3: Our first monophonic synthesizer</h2>
+<p>Music, much like many other fields, involves some mathematical principles. One of these is the formula for converting MIDI note numbers into frequencies. We manually wrote note frequencies in practical 1 when programming our first sequence, however this is not effective when we do not know what MIDI notes we will receive. We can use the following formula to calculate note frequencies in real time.</p>
+<p><img src="../images/Screen%20Shot%202019-02-21%20at%2012.27.15.png" height=60/></p>
+<p>where &#39;f&#39; is our frequency, and &#39;n&#39; is our note number. You will need to use the power function to calculate the exponent (the part written above the number &#39;2&#39;). </p>
+<p>The pow() function takes two arguments x and y and returns the result of x to the power y. 
+That is, the equation: </p>
+<p><img src="../images/Screen%20Shot%202019-02-21%20at%2012.27.20.png" height=60/></p>
+<p>can be written in C++ as: </p>
+<pre><code class="lang-cpp"><span class="hljs-attribute">p</span> = pow (x, y);
+</code></pre>
+<p>Do not worry if you do not understand this fully yet. Complete this exercise by arranging the following code in the correct order. If you are up for the challenge, have a go at implementing this yourself.</p>
+<pre><code class="lang-cpp"><span class="hljs-number">1.</span>    int freq = <span class="hljs-number">440</span> * power;
+<span class="hljs-number">2.</span>    int power = pow(<span class="hljs-number">2</span>, octave); 
+<span class="hljs-number">3.</span>    aserveOscillator (<span class="hljs-number">0</span>, freq, <span class="hljs-number">1.0</span>, <span class="hljs-number">1</span>); <span class="hljs-comment">// squarewave oscillator</span>
+<span class="hljs-number">4.</span>    int octave = (note – <span class="hljs-number">69</span>) / <span class="hljs-number">12</span>;
+</code></pre>
+<p>Run and test your program before moving on. You <em>may</em> notice some weird behaviours. Read on below...</p>
+<h2 id="error">Error</h2>
+<p>You should notice that there is an error when we run our program. That is no matter what note we play, we hear the note A, in different octaves.</p>
+<p>The reason that the program does not work correctly is due to using integers. Since note frequencies have decimal parts, we will need to replace some of the <em>int</em> datatypes with <em>float</em> datatypes.</p>
+<p>The last thing we need to do is to swap the 12 on statement 4, to be 12.0. The constant 12 is not the same as 12.0, to ensure we use floating point datatypes everywhere we have to specify 12.0. Try swapping these two values and witness the result.</p>
+<h2 id="exercise-4-filter-control">Exercise 4: Filter Control</h2>
+<p>Lets now have a go at using a second callback function, this time for the modulation wheel (circled below). We will adapt this to control the Aserve built-in low pass filter:</p>
+<p><img src="../images/aserveModWheel.png"></p>
+<p>Firstly in our IAP.h file we need to un-comment the callback function for modwheel events:</p>
+<p>Before it looks like:</p>
+<pre><code class="lang-cpp">    //void callbackModWheelMoved (<span class="hljs-built_in">int</span> <span class="hljs-built_in">value</span>);
+</code></pre>
+<p>And now it should look like:</p>
+<pre><code class="lang-cpp">    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">callbackModWheelMoved</span> (<span class="hljs-params"><span class="hljs-keyword">int</span> <span class="hljs-keyword">value</span></span>)</span>;
+</code></pre>
+<p>Return to the  IAP.cpp and add the following code <strong>under the IAP::run() function</strong> as you did above for the note callback. Your IAP.cpp should look something like this:</p>
+<pre><code class="lang-cpp">IAP::run() 
+{
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) 
+    {
+           aserveSleep(<span class="hljs-number">1000</span>);
+    }
+}
+
+<span class="hljs-keyword">void</span> IAP::callbackModWheelMoved (<span class="hljs-keyword">int</span> value)
+{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Modwheel just moved - the value is "</span> &lt;&lt; value &lt;&lt; <span class="hljs-string">"\n"</span>;
+}
+</code></pre>
+<p>For this exercise, we want the modwheel to control the cutoff frequency of the built-in Aserve low pass filter. This will muffle and un-muffle the sound as we move the modwheel. The cutoff frequency has a range from 20Hz to 20,000Hz... but our modwheel has a different range.</p>
+<ol>
+<li>Run the program.</li>
+<li>Move the modwheel to the lowest and highest position.</li>
+<li>Watch the console output and write down the maximum value of the mod wheel value.</li>
+<li>Use the formula below to scale and shift the value.</li>
+</ol>
+<p><img src="../images/cuttoff_a.png" height=60/></p>
+<pre><code class="lang-cpp">
+<span class="hljs-keyword">void</span> IAP::callbackModWheelMoved (<span class="hljs-keyword">int</span> value)
+{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Modwheel just moved - the value is "</span> &lt;&lt; value &lt;&lt; <span class="hljs-string">"\n"</span>;
+
+    <span class="hljs-keyword">float</span> cutoff = ((value / [insert maximum value here and remove square brackets]<span class="hljs-number">.0</span>) * <span class="hljs-number">19800</span>) + <span class="hljs-number">20</span>;
+    aserveLPF(cutoff);    
+}
+</code></pre>
+<p>All being well, you now have a working monophonic synth with a simple filter control assigned to the modwheel. If you can’t hear the muffling effect taking place, try checking the wave type of your <code>aserveOscillator()</code>, a square (wave type 1) waveform will allow you to easily hear the effect.</p>
+<h2 id="debug-exercise">Debug Exercise</h2>
+<p>Give a single reason to why the following code will not work.</p>
+<pre><code class="lang-cpp">        <span class="hljs-keyword">int</span> number;
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cin</span> &gt;&gt; number;
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"this number doubled is &lt;&lt; number * 2;</span>
+</code></pre>
+<h2 id="challenge-exercise-better-filter-control">Challenge Exercise: Better Filter Control</h2>
+<p>To improve the range of controls for the filter you may use the following formula:</p>
+<p><img src="../images/cuttoff_b.png" height=60/></p>
+<pre><code class="lang-cpp">cutoff = ( pow((value / [<span class="hljs-keyword">insert</span> maximum <span class="hljs-keyword">value</span> here <span class="hljs-keyword">and</span> remove <span class="hljs-keyword">square</span> brackets]<span class="hljs-number">.0</span>), <span class="hljs-number">3.0</span>) * <span class="hljs-number">19800</span>) + <span class="hljs-number">20</span>;
+</code></pre>
+<p>This will apply a non-linear scale to the filter control to gives us a more natural sounding filter sweep. You may also wish to adjust the constants 19800 and 20 and observe what effect this has.</p>
+<h2 id="homework">Homework</h2>
+<p>Add in a pitchbend callback,  use this to control one of the other aserve filters, remember to first print the pitchbend value to help you work out the min and max values for entering into the cutoff formula.  As an additional challenge work out how to get the synthesizer to react to velocity values.</p>
+<p><strong>As an optional challenge try writing the frequency conversion equation from exercise on one line of code</strong>
+<em>hint</em> It might look a bit like this:</p>
+<pre><code class="lang-cpp">    <span class="hljs-type">float</span> frequency = <span class="hljs-number">440</span> * pow(.../<span class="hljs-number">12.0</span>...);
+</code></pre>
+<h2 id="conclusion">Conclusion</h2>
+<p>Ensure that you understand how to use callback functions before next weeks practical, as they will be used in every practical in future. </p>
+<h2 id="important-material">Important Material</h2>
+<p>Knowledge of the following will be assumed in next week’s practical:</p>
+<ol>
+<li>How to use callback functions</li>
+<li>How to convert note numbers to frequency values</li>
+<li>The use of the pow function</li>
+</ol>
+<h2 id="videos">Videos</h2>
+<p>The following videos may help you during this session:</p>
+<h3 id="aserve-programming-2-callbacks">Aserve Programming 2 - callbacks</h3>
+<p><a href="http://www.youtube.com/watch?v=ZJXi2eIq--0"><img src="http://img.youtube.com/vi/ZJXi2eIq--0/0.jpg" alt="IMAGE ALT TEXT HERE"></a></p>
+<h3 id="operators">Operators</h3>
+<p><a href="http://www.youtube.com/watch?v=yPNMVlxy1B0"><img src="http://img.youtube.com/vi/yPNMVlxy1B0/0.jpg" alt="IMAGE ALT TEXT HERE"></a></p>
+
+<a href="/index.html">Return to homepage</a>
+</body>

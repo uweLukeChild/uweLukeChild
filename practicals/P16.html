@@ -1,0 +1,138 @@
+
+<head>
+
+</head>
+
+<body>
+<a href="/index.html">Back to homepage</a>
+<h1 id="tutorial-16-some-more-c-">Tutorial 16 – Some more C++</h1>
+<p>In this practical we will learn about a few additional topics that you might find useful for the assignment, as well as learning more about C++.</p>
+<ol>
+<li>2D arrays</li>
+<li>Auto</li>
+<li>Range based for loops</li>
+<li>Ternary operator</li>
+<li>Version control</li>
+</ol>
+<h2 id="2d-arrays">2D arrays</h2>
+<p>We have looked at using single dimension arrays, however there are a number of occasions where we might want to have arrays with more than one dimension. For example, we can create a 10 x 10 array by applying the following:</p>
+<pre><code class="lang-cpp"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">array</span>&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">array</span>&lt;<span class="hljs-keyword">int</span>, 10&gt;, 10&gt; tenByTen;
+</code></pre>
+<p>To access each dimension, you use another set of [] brackets.</p>
+<pre><code class="lang-cpp">tenByTen[<span class="hljs-string">0</span>][<span class="hljs-symbol">0</span>] = 10;
+</code></pre>
+<p>The general form of a 2D array looks like:</p>
+<pre><code class="lang-cpp">std::array<span class="xml"><span class="hljs-tag">&lt; <span class="hljs-attr">std::array</span>&lt;<span class="hljs-attr">int</span>, /* <span class="hljs-attr">inner</span> <span class="hljs-attr">size</span>*/&gt;</span></span>, /<span class="hljs-emphasis">*outer size*</span>/&gt; tenByTen;
+
+tenByTen[<span class="hljs-string">/*outer index*/</span>][<span class="hljs-symbol">/*inner index*/</span>]
+</code></pre>
+<h2 id="2d-vectors">2D vectors</h2>
+<p>You can also have 2D vectors, however they are a little more challenging to conceptualise as each row can have a different size.</p>
+<pre><code class="lang-cpp"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; &gt; _2dVector;
+</code></pre>
+<p>And just to make things more complicated you can also have a vector of array, or any combination of such data structures:</p>
+<pre><code class="lang-cpp"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">std</span>::<span class="hljs-built_in">array</span>&lt;<span class="hljs-keyword">int</span>, 10&gt; &gt; vectorOf10ElementArrays;
+</code></pre>
+<h2 id="exercise-1-">Exercise 1:</h2>
+<p>We will be remaking our scale function.</p>
+<p>We will be using a 2D std::array with an inner size of 12 and an outer size of 8. This array will hold scale information and allow us to quickly quantize note numbers into a scale. The outer index will specify the scale number, and the inner number will specify each scale degree. We can set the values for a single scale by using the following line of code:</p>
+<pre><code class="lang-cpp">  scales[<span class="hljs-number">0</span>] = {<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>, <span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>, <span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>};
+</code></pre>
+<p>Note that we must supply as many arguments between the {} as there are elements in the array, as there are 12 elements for the inner size we must supply 12. Note that the above code is a shortened version of doing:</p>
+<pre><code class="lang-cpp">  scales[<span class="hljs-string">0</span>][<span class="hljs-symbol">0</span>] = 0;
+  scales[<span class="hljs-string">0</span>][<span class="hljs-symbol">1</span>] = 1;
+  scales[<span class="hljs-string">0</span>][<span class="hljs-symbol">2</span>] = 0;
+  ...
+</code></pre>
+<p>To get started:</p>
+<ol>
+<li>Reload a previous synthesiser program to use for this exercise.</li>
+<li>Create a shared std::array called scales as specified above.</li>
+<li>Create a shared variable called chosenScale.</li>
+<li>At the start of your run function setup the scale values.</li>
+<li>You can use the following code snippet to quantise notes to a scale.</li>
+</ol>
+<pre><code class="lang-cpp">
+int pitch = note % 12;
+return note + scales[<span class="hljs-string">chosenScale</span>][<span class="hljs-symbol">pitch</span>];
+</code></pre>
+<h2 id="auto">Auto</h2>
+<p>In C++ we have to define the type when declaring a variable. However, in other programming languages <strong>type</strong> is inferred by the complier. There are occasions in C++ when we can use the auto variable data type to allow the compiler to determine the data type for us.</p>
+<pre><code class="lang-cpp">   <span class="hljs-keyword">auto</span> a = <span class="hljs-string">"hello"</span>;
+   <span class="hljs-keyword">auto</span> b = <span class="hljs-number">10</span>;
+   <span class="hljs-keyword">auto</span> c = <span class="hljs-number">0.5</span>;
+
+   <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; a &lt;&lt; <span class="hljs-string">", "</span> &lt;&lt; b &lt;&lt; <span class="hljs-string">", "</span> &lt;&lt; c &lt;&lt; <span class="hljs-string">"\n"</span>;
+</code></pre>
+<p>When we run a program contain the above code and then open the debugger we can see that these variables have data types determined by the compiler.</p>
+<p><img src="../images/autotypes.png" height=200/></p>
+<p>If you can determine the data type yourself then you should declare it as such, however there are a number of useful occasions where we might use the auto type. We will return to this at the end of this tutorial.</p>
+<h2 id="range-based-for-loops">Range based for loops</h2>
+<p>We have been making frequent use of the following code snippet to iterate over the contents of arrays and vectors:</p>
+<pre><code class="lang-cpp">    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; values = {<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>};
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; values.size(); i++) {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; values[i] &lt;&lt; <span class="hljs-string">"\n"</span>;
+    }
+</code></pre>
+<p>However, there is variant of the for loop that we can use instead:</p>
+<pre><code class="lang-cpp">    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i : values) {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="hljs-string">", "</span>;
+    }
+</code></pre>
+<p>We are creating a temporary variable as we did before, followed by the single colon <strong>:</strong> operator, and then we supply the array we wish to iterate over.  </p>
+<p>Range based for loops will iterate over each value from the starting position 0 up to the last element. Note that the value <strong>i</strong> will hold a copy of the value at each index. So therefore, this loop is only able to read each element. We can adapt this code by using the &amp; operator, to take a reference to each element in the array, therefore we can both read and write data. However, you should only use the &amp; operator if you really need to modify each element!</p>
+<pre><code class="lang-cpp">    <span class="hljs-comment">//Double each element</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> &amp; <span class="hljs-string">i :</span> values) {
+        i *= <span class="hljs-number">2</span>;
+    }
+</code></pre>
+<p>Note then when using range-based loops, it is very common to the replace the data type with an auto type.</p>
+<pre><code class="lang-cpp">    <span class="hljs-comment">//Double each element</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> &amp; i : values) {
+        i *= <span class="hljs-number">2</span>;
+    }
+</code></pre>
+<h2 id="exercise-2-range-based-for-loops">Exercise 2: Range based for loops</h2>
+<p>Refactor a previous program that you have written to use a range based for loop. Practical 10 exercise 3 or practical 11 exercise 3 are good starting points, however you may choose a different one.</p>
+<h2 id="ternary-operator">Ternary Operator</h2>
+<p>We have previously seen and used the following code (waveType is a shared variable) </p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">void</span> IAP::callbackModWheelMoved (<span class="hljs-keyword">int</span> value)
+{
+    <span class="hljs-comment">//Switch between sine and saw</span>
+    <span class="hljs-keyword">if</span> (value &lt; <span class="hljs-number">64</span>) {
+        waveType = <span class="hljs-number">0</span>;
+    }
+    <span class="hljs-keyword">else</span> {
+        waveType = <span class="hljs-number">1</span>;
+    }
+}
+</code></pre>
+<p>Instead of using an if-else statement we can use the <strong>Ternary</strong> operator:</p>
+<pre><code class="lang-cpp">void I<span class="hljs-symbol">AP:</span><span class="hljs-symbol">:ca</span>llbackModWheelMoved (<span class="hljs-built_in">int</span> <span class="hljs-built_in">value</span>)
+{
+    //<span class="hljs-built_in">Switch</span> between sine <span class="hljs-built_in">and</span> saw
+    waveType = <span class="hljs-built_in">value</span> &lt; <span class="hljs-number">64</span> ? <span class="hljs-number">0</span> <span class="hljs-symbol">:</span> <span class="hljs-number">1</span>;
+}
+</code></pre>
+<p>The general form of a Ternary operator is as follows:</p>
+<pre><code class="lang-cpp">   (condition) ? <span class="hljs-literal">true</span> <span class="hljs-keyword">value</span> : <span class="hljs-literal">false</span> <span class="hljs-keyword">value</span>;
+</code></pre>
+<p>The condition is first checked, then if the condition is true the value following the ? operator is returned, otherwise the value following the : operator is returned instead. Ternary statements can be used to significantly reduce the size of code. In this example we have replace 6 lines of code with 1.</p>
+<p>The ternary operator can also be used to call functions:</p>
+<pre><code class="lang-cpp">    <span class="hljs-keyword">if</span> <span class="hljs-comment">(filterType == 1)</span> {
+        aserveHPF<span class="hljs-comment">(cutoff)</span>;
+    }
+    else {
+        aserveLPF<span class="hljs-comment">(cutoff)</span>;
+    }
+</code></pre>
+<p>or:</p>
+<pre><code class="lang-cpp">   <span class="hljs-comment">(filterType == 1)</span> ? aserveHPF<span class="hljs-comment">(cutoff)</span> : aserveLPF<span class="hljs-comment">(cutoff)</span>;
+</code></pre>
+<h2 id="exercise-3-">Exercise 3:</h2>
+<p>Use the ternary operator to refactor a previous program that you have written.</p>
+<h2 id="git">Git</h2>
+
+<a href="/index.html">Return to homepage</a>
+</body>

@@ -1,0 +1,222 @@
+
+<head>
+
+</head>
+
+<body>
+<a href="/index.html">Back to homepage</a>
+
+<h1 id="tutorial-5-functions">Tutorial 5 – Functions</h1>
+<p>In this practical we will learn how common functionality in larger programs can be written as smaller sub-components called &#39;functions&#39;. On successful completion of this practical you will have an understanding of: </p>
+<ol>
+<li>How programs can be organized into functions.</li>
+<li>How to declare, define and call your own functions.</li>
+<li>How to pass values into functions.</li>
+<li>How to return values from functions. </li>
+</ol>
+<p>Practicals from here on will assume knowledge of functions so please ensure you complete this week’s practical. This is a very IMPORTANT practical.</p>
+<h2 id="motivation">Motivation</h2>
+<p>C++ &#39;functions&#39; enable multiple statements to be executed by a single statement referred to as a function call. We have already written programs which use functions, e.g. aserveOscillator(), pow() are both function calls. However, an important part of any programming language is to define your own functions - to group multiple statements together which can be called.  If you know how to do this, any large complex program can be divided into smaller blocks of code. This makes programs easier to design, read and maintain. </p>
+<p>It is possible to write your program <strong>without</strong> using custom functions, however your programs will end up being:</p>
+<ul>
+<li>Overwhelmingly large</li>
+<li>Challenging to understand</li>
+<li>Difficult to maintain</li>
+<li>Repetitive</li>
+<li>Potentially error prone (e.g. typos in repetitions)</li>
+</ul>
+<h2 id="declaring-functions">Declaring Functions</h2>
+<p>When declaring your own function, there are two steps that should be taken before it can be used (or called). </p>
+<ol>
+<li>Write a function <strong>declaration</strong> (in the IAP.h file, underneath the FUNCTIONS label).</li>
+<li>Write the function <strong>definition</strong> (at the bottom of the IAP.cpp file, after the run loop). </li>
+</ol>
+<p>The function <strong>declaration</strong> tells the compiler how the function can be used (to enable error checking at compile time), while the function <strong>definition</strong> specifies what the function does when it is called.     </p>
+<p>The general form of the function declaration is as follows: </p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">return</span>-<span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">functionName</span> </span>( argument-<span class="hljs-class"><span class="hljs-keyword">type</span></span>(s) );
+</code></pre>
+<p>The return-type indicates the data type of the value which is returned from the function. The argument-types indicate the data types of any values that are passed into the function. The function-name should indicate what the function does. </p>
+<p>The readNumber() function provided at the beginning of this practical does not take any arguments, but returns an int. C++ functions can take many arguments but only return one. If a function does not return anything, the return type must be written as <strong>void</strong>.</p>
+<p>Examples of a few function declarations are shown bellow.</p>
+<pre><code class="lang-cpp"><span class="hljs-comment">//A function that does not return anything, nor have any arguments</span>
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">makeErrorTone</span> <span class="hljs-params">()</span></span>;
+
+<span class="hljs-comment">//A function that does not return anything, but takes a single argument.</span>
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">printTime</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> time)</span></span>;
+
+<span class="hljs-comment">//A function that returns a int value, and takes a single argument.    </span>
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">covertCtoF</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> centigrade)</span></span>;
+
+<span class="hljs-comment">// A function that does not return anything, but takes 3 arguments.</span>
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">setNote</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> note, <span class="hljs-keyword">int</span> velocity, <span class="hljs-keyword">int</span> wave)</span></span>;
+</code></pre>
+<h2 id="function-definitions">Function Definitions</h2>
+<p>Function definitions should appear in IAP.cpp separated from the IAP::run() function. The first line of the definition should match the declaration, but have the IAP:: statement placed between the return type and function name. This must be followed by opening and closing braces that enclose the statements that are to be executed when the function is called. Note that the semi-colon included in the declaration is not used in the definition.</p>
+<h2 id="first-function">First function</h2>
+<p>To illustrate when we might to make a function, open up an empty project and copy the following code to the IAP::run() in IAP.cpp. </p>
+<p>Study the code below.</p>
+<pre><code class="lang-cpp">  <span class="hljs-keyword">int</span> numberA = <span class="hljs-number">0</span>;
+  <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Please enter a number : \n"</span>;
+  <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cin</span> &gt;&gt; numberA;
+
+  <span class="hljs-keyword">int</span> numberB = <span class="hljs-number">0</span>;
+  <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Please enter a number : \n"</span>;
+  <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cin</span> &gt;&gt; numberB;
+
+  <span class="hljs-keyword">int</span> numberC = <span class="hljs-number">0</span>;
+  <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Please enter a number : \n"</span>;
+  <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cin</span> &gt;&gt; numberC;
+
+  <span class="hljs-keyword">int</span> numberD = <span class="hljs-number">0</span>;
+  <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Please enter a number : \n"</span>;
+  <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cin</span> &gt;&gt; numberD;
+</code></pre>
+<p>Study the code above. </p>
+<p>There are four groups of statements, each marginally different. If we look closely, the only difference is the variable we are storing our data in. </p>
+<p>If you find yourself writing code like this, you should re-write it as a function. 
+Doing so avoids duplication of code, and makes your code easier to change.</p>
+<h2 id="exercise-1-our-first-function">Exercise 1: Our first function</h2>
+<ol>
+<li>Select the IAP.h file for editing</li>
+<li>Place the following line of code under the FUNCTIONS label, after the run function that is already there.</li>
+</ol>
+<pre><code class="lang-cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">readNumber</span> <span class="hljs-params">()</span></span>;
+</code></pre>
+<ol>
+<li>Select the IAP.cpp file for editing</li>
+<li>Add the following code under our main run() function.</li>
+</ol>
+<pre><code class="lang-cpp"><span class="hljs-keyword">int</span> IAP::readNumber ()
+{
+    <span class="hljs-keyword">int</span> number = <span class="hljs-number">0</span>;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Please enter a number : \n"</span>;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cin</span> &gt;&gt; number;
+       <span class="hljs-keyword">return</span> number;
+}
+</code></pre>
+<p><em>The IAP:: part of our statements, means that this function is owned by the IAP class. Classes will be explored in later practical’s.</em></p>
+<p>We can now remove use our new readNumber function, and the overall code is simple and readable.</p>
+<pre><code class="lang-cpp"><span class="hljs-attribute">int numberA</span> = readNumber();
+<span class="hljs-attribute">int numberB</span> = readNumber();
+<span class="hljs-attribute">int numberC</span> = readNumber();
+<span class="hljs-attribute">int numberD</span> = readNumber();
+</code></pre>
+<p>Make sure the program operates as it did previously. You should now be able to see how much more clear the code is to read. We will now look at functions in more detail.</p>
+<h2 id="exercise-2-mtof-function">Exercise 2: mtof function</h2>
+<p>Back in practical 3 we used a formula for converting note numbers into frequencies. This formula is commonly known as the &quot;MIDI to Frequency&quot; equation. This is often shortened to &quot;mtof&quot;. We&#39;ll use this equation throughout this module, so it would make sense to put this code inside a function. </p>
+<p>Download the practical 5.2 files from <a href="../../Code%20Exercises/Tutorial%205/Exercise%202">here</a> and copy in the code for both the .h and .cpp file.</p>
+<ol>
+<li>Click the folder link above, download the files.</li>
+<li>Replace your iapProj <code>IAP.cpp</code> and <code>IAP.h</code> with the files you just downloaded.</li>
+<li>Read and follow the tasks below</li>
+</ol>
+<p>The prototype for our mtof function looks like this. </p>
+<pre><code class="lang-cpp"><span class="hljs-function"><span class="hljs-keyword">float</span> <span class="hljs-title">mtof</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> note)</span></span>;
+</code></pre>
+<p>Our mtof function takes an int (midi note number) as its argument and returns a float (frequency).  </p>
+<p>You can do these steps below in almost any order, but if you follow them as written, you&#39;ll have an iapProj that converts note numbers to frequencies simply, and using a function called <code>mtof</code>.</p>
+<ol>
+<li>Add the mtof function <strong>declaration</strong> to the IAP.h file.</li>
+<li>Add the mtof function <strong>definition</strong> to the IAP.cpp file.</li>
+<li>Put the relevant code from our note callback function into our mtof function.</li>
+<li>You will need to use the return keyword to <strong>return</strong> the value of frequency.</li>
+<li>Use the mtof function to calculate our frequency value.</li>
+<li>Pass the frequency value to our oscillator function.      </li>
+</ol>
+<p>With our mtof function, it is now easy to add a second call for a <strong>harmonised frequency value</strong>  7 semitones higher than our original note, for example.</p>
+<pre><code class="lang-cpp"><span class="hljs-attribute">float frequencyA</span> = mtof(note);
+<span class="hljs-attribute">float frequencyB</span> = mtof(note + 7);
+</code></pre>
+<h2 id="exercise-3-chord-machine">Exercise 3: Chord Machine</h2>
+<p>We will now create two more functions, called <strong>majorChord</strong> and <strong>minorChord</strong>. These functions will take a single argument (a note number) but not return anything. </p>
+<p>The <strong>major</strong> function will covert three note numbers to frequencies and supply these to three separate oscillators. The first frequency value will be calculated on the supplied note number, the second frequency will be calculated based on the supplied note number + 4, and the third note number + 7.</p>
+<p>The minor function is the same except oscillator two will be calculated based on the original note number + 3.</p>
+<p>The code for the note callback function is supplied bellow, <strong>ensure that you have correctly added the two chord functions before trying to run the code</strong>. The bottom 4 drum pads on the impulse control correspond to the 4 chords. </p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">void</span> IAP::callbackNoteReceived  (<span class="hljs-keyword">int</span> note, <span class="hljs-keyword">int</span> velocity, <span class="hljs-keyword">int</span> channel)
+{
+    <span class="hljs-keyword">if</span> (note == <span class="hljs-number">60</span>)
+    {
+        majorChord(<span class="hljs-number">60</span>); <span class="hljs-comment">// C Major</span>
+    }
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (note == <span class="hljs-number">62</span>)
+    {
+        majorChord(<span class="hljs-number">65</span>); <span class="hljs-comment">// F Major</span>
+    }
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (note == <span class="hljs-number">64</span>)
+    {
+        majorChord(<span class="hljs-number">67</span>); <span class="hljs-comment">// G Major</span>
+    }
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (note == <span class="hljs-number">65</span>)
+    {
+        minorChord(<span class="hljs-number">69</span>); <span class="hljs-comment">// A Minor</span>
+    }
+}
+</code></pre>
+<h2 id="exercise-4-more-chords">Exercise 4: More Chords</h2>
+<p>Add 2 or more chord functions, some suggestions for chords are given bellow. You should map these chords to the other 4 drum pads.</p>
+<table>
+<thead>
+<tr>
+<th>Chord Name</th>
+<th>Intervals</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Major 7</td>
+<td>+4, +7, +11</td>
+</tr>
+<tr>
+<td>Minor 7</td>
+<td>+3, +7, +10</td>
+</tr>
+<tr>
+<td>Dominant 7</td>
+<td>+4, +7, +10</td>
+</tr>
+<tr>
+<td>Diminished</td>
+<td>+3, +6</td>
+</tr>
+<tr>
+<td>Maj7 add6</td>
+<td>+4, +7, +9</td>
+</tr>
+<tr>
+<td>Min7 add6</td>
+<td>+3, +7, +9</td>
+</tr>
+<tr>
+<td>Sus4</td>
+<td>+5, +7</td>
+</tr>
+<tr>
+<td>Sus2</td>
+<td>+2, +7</td>
+</tr>
+</tbody>
+</table>
+<h2 id="debug-exercise-">Debug Exercise.</h2>
+<p>Open debug exercise 5 and then fix the broken exercise. Make sure you save your solution to codeBook.</p>
+<p>Download: <a href="../../Code%20Exercises/Tutorial%205/Debug">Tutorial 05 Debug code</a></p>
+<h2 id="challenge-exercise-">Challenge Exercise:</h2>
+<p>Add a nested if statement to the note callback function in exercise 4 so that chords are only switched on when the velocity value is greater than 0, otherwise turn off all the current oscillators. </p>
+<h2 id="important-material-">Important Material:</h2>
+<p>Further practicals assume knowledge of functions so please ensure you have completed this week’s practical. This is a very IMPORTANT practical!</p>
+<p>Understanding of the following will be assumed next week: </p>
+<ol>
+<li>How programs can be organized into functions.</li>
+<li>How to declare, define and call your own functions.</li>
+<li>How to pass values into functions. </li>
+</ol>
+<h2 id="videos">Videos</h2>
+<p>The following videos may help during this session:</p>
+<h3 id="functions">Functions</h3>
+<p><a href="http://www.youtube.com/watch?v=Cbj72bZrxaE"><img src="http://img.youtube.com/vi/Cbj72bZrxaE/0.jpg" alt="IMAGE ALT TEXT HERE"></a></p>
+
+<a href="/index.html">Return to homepage</a>
+</body>

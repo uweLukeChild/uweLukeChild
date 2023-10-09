@@ -1,0 +1,313 @@
+
+<head>
+
+</head>
+
+<body>
+<a href="/index.html">Back to homepage</a>
+
+<h1 id="tutorial-7-switch-case-and-combinational-if-statements">Tutorial 7 - Switch Case and Combinational if Statements</h1>
+<p>In this practical we will develop a deeper understanding of flow control using more advanced conditional expressions and switch/case structures. On successful completion of this practical you will have an understanding of: </p>
+<ol>
+<li>while loops with conditions.</li>
+<li>logical operators and how they are used to connect conditional expressions. </li>
+<li>switch/case structures and how they may be used to control program flow. </li>
+<li>How to use a string</li>
+</ol>
+<h2 id="while-true">while true</h2>
+<p>In previous sessions you have developed ‘never-ending’ programs using a while loop, for example:</p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">void</span> IAP::run ()
+{
+  <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) 
+  {
+     aserveSleep(<span class="hljs-number">1000</span>);
+  }
+}
+</code></pre>
+<p>You have seen this when using many of the callback based MIDI processing exercises.</p>
+<p>By explicitly specifying the condition of the while loop as true the program will never exit on its own. As we learned with if statements, it is possible to insert a conditional statement in place of true so that the program flow (in this case the while loop) can be controlled at run-time. </p>
+<h2 id="exercise-1-program-exit">Exercise 1: Program Exit</h2>
+<p>Open up the practical 7 exercise 1 files and copy them to your Xcode project.</p>
+<p>Download: <a href="../../Code%20Exercises/Tutorial%207">Tutorial 7 code</a></p>
+<p>Modify the condition of the while loop so that the user can enter a number to cause the loop to exit. The steps you might follow to achieve this are listed below:</p>
+<ol>
+<li>Add a variable called programExit before the while loop</li>
+<li>Set this value to be equal to 1.</li>
+<li>Change the condition of the while loop so that it runs while the variable is equal to 1.</li>
+<li>Within the while loop add a std::cin command for changing the value of programExit.</li>
+<li>Remember to print useful instructions to the user</li>
+<li>Test the program and ensure that it exits</li>
+</ol>
+<h2 id="introduction-to-strings">Introduction to Strings</h2>
+<p>In the previous exercise we used an <strong>integer</strong> variable to control the condition of a while loop. However, we often want to communicate with our users by using more literal forms of communication. For example, instead of saying enter 1 for the loop to continue, or enter 0 to quit. We can instead ask the user to type ‘Yes’ or ‘No’</p>
+<p>We refer to variables that hold text as strings, or more specifically we use the variable type std::string.</p>
+<pre><code class="lang-cpp"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> name = <span class="hljs-string">""</span>;
+</code></pre>
+<p>We can use std::cin to put text into our string from a user in the same way as we do with other variable types.</p>
+<pre><code class="lang-cpp"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Enter name"</span>;
+<span class="hljs-built_in">std</span>::<span class="hljs-built_in">cin</span> &gt;&gt; name;
+</code></pre>
+<p>We can compare the value of a string by using the == operator:</p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">if</span> (day == <span class="hljs-string">"Monday"</span>) 
+{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Worse day of the week :( \n"</span>;
+}
+</code></pre>
+<h2 id="exercise-2-using-strings">Exercise 2: Using Strings</h2>
+<p>Modify your solution to exercise 1, so that the condition of the while loop is controlled by a string variable. Whereby if the user enters the text <strong>‘yes’</strong> then the loop can continue, otherwise it will exit.</p>
+<h2 id="logical-operators">Logical Operators</h2>
+<h2 id="logical-and-">Logical And &amp;&amp;</h2>
+<p>Sometimes programs need to test multiple conditions before executing certain code. For example, we may want to check that the value a user specifies for an oscillator’s amplitude is greater than or equal to 0.0 and less than or equal to 1.0 before starting an oscillator. Using the methods learned last week this would lead to the code: </p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">if</span> <span class="hljs-comment">(amp &gt;= 0.0)</span>
+{
+    <span class="hljs-keyword">if</span> <span class="hljs-comment">(amp &lt;= 1.0)</span>
+    {
+        aserveOscillator<span class="hljs-comment">(0, 440.0, amp, 0)</span>;
+    }
+}
+</code></pre>
+<p>However, it is possible to connect multiple conditional statements such that they can be tested as one big conditional expression using the logical AND operator (&amp;&amp;) as follows: </p>
+<pre><code class="lang-cpp">if (amp &gt;= <span class="hljs-number">0.0</span> &amp;&amp; amp &lt;= <span class="hljs-number">1.0</span>)
+{
+    aserveOscillator(<span class="hljs-number">0</span>, <span class="hljs-number">440.0</span>, amp, <span class="hljs-number">0</span>);
+}
+</code></pre>
+<p>If both the conditional statements either side of the logical AND (&amp;&amp;) operator are <strong>true</strong>, the outcome of the entire conditional expression is <strong>true</strong> and the oscillator is turned on. If either, or both of the statements are <strong>false</strong>, then the outcome of the entire expression is <strong>false</strong> and the call to aserveOscillator() is skipped. </p>
+<p>In the latter situation an else condition could be used to inform the user that the value they entered was outside of the expected 0.0 to 1.0 range. </p>
+<h2 id="logical-or-">Logical OR ||</h2>
+<p>The OR (||) logical operator may be used to test whether a series of the conditions are true. For example, in practical 2 we may have wanted to check to see if the user had entered either ‘yes’ or ‘YES’.</p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">while</span> (<span class="hljs-built_in">text</span> == <span class="hljs-string">"yes"</span> || <span class="hljs-built_in">text</span> == <span class="hljs-string">"YES"</span>) 
+{
+
+}
+</code></pre>
+<p>If one (or any) of the conditional statements on either side of the logical OR operator (||) are true, the outcome of the entire conditional expression is true and therefore the loop will continue to run.</p>
+<h2 id="logical-not-">Logical Not !</h2>
+<p>It is also possible to invert the outcome of a conditional expression using the logical NOT operator (!). For example, the following code will print <em>‘funds available’</em> when the variable cash is <strong>not</strong> 0.</p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">if</span> (cash != <span class="hljs-number">0</span>) 
+{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Funds Avaliable"</span>;
+}
+</code></pre>
+<h2 id="brackets">Brackets</h2>
+<p>The &amp;&amp; operator and || operator have the same order of precedence, meaning that you cannot be sure the order in which they will be executed.</p>
+<p>For example:</p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">if</span> (time &gt; <span class="hljs-number">600</span> &amp;&amp; time &lt; <span class="hljs-number">1800</span> || override == <span class="hljs-number">0</span>) 
+{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"turning lights off\n"</span>;
+}
+</code></pre>
+<p>It would seem natural that the &amp;&amp; symbol would be computed between both sets of time variable comparisons; however, this cannot be guaranteed, and this will often result in a compiler warning. When chaining together multiple logical operations it is best practice to place them in brackets.</p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">if</span> ( (time &gt; <span class="hljs-number">600</span> &amp;&amp; time &lt; <span class="hljs-number">1800</span>) || override == <span class="hljs-number">0</span>) 
+{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"turning lights off\n"</span>;
+}
+</code></pre>
+<h1 id="exercise-3-logical-operations">Exercise 3: Logical Operations</h1>
+<p>Using what you have learnt about logical operators work out which of the following statements will get printed. Try and complete this exercise without using xcode.</p>
+<h3 id="1-">1:</h3>
+<pre><code class="lang-cpp">    <span class="hljs-keyword">int</span> temperature = <span class="hljs-number">11</span>;
+    <span class="hljs-keyword">if</span> (temperature &gt; <span class="hljs-number">10</span> &amp;&amp; temperature &lt; <span class="hljs-number">13</span>) 
+    {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Is Just right \n"</span>;
+    }
+    <span class="hljs-keyword">else</span> 
+    {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Is too hot, or too cold\n"</span>;
+    }
+</code></pre>
+<h3 id="2">2</h3>
+<pre><code class="lang-cpp">    <span class="hljs-keyword">int</span> num1 = <span class="hljs-number">10</span>;
+    <span class="hljs-keyword">int</span> num2 = <span class="hljs-number">12</span>;
+    <span class="hljs-keyword">if</span> (num1 == <span class="hljs-number">10</span> &amp;&amp; num2 != <span class="hljs-number">12</span>) 
+    {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Great!"</span>;
+    }
+    <span class="hljs-keyword">else</span> 
+    {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Not Great!"</span>;
+    }
+</code></pre>
+<h3 id="3">3</h3>
+<pre><code class="lang-cpp">    <span class="hljs-keyword">float</span> amplitude = <span class="hljs-number">1.3</span>;
+    <span class="hljs-keyword">if</span> (amplitude &lt; <span class="hljs-number">0.0</span> || amplitude &gt; <span class="hljs-number">1.0</span>) 
+    {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Too Loud!"</span>;
+    }
+    <span class="hljs-keyword">else</span> 
+    {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Is ok!"</span>;
+    }
+</code></pre>
+<h3 id="4">4</h3>
+<pre><code class="lang-cpp">    <span class="hljs-keyword">float</span> config = <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">float</span> freq = <span class="hljs-number">20000</span>;
+
+    <span class="hljs-keyword">if</span> ( (freq &lt; <span class="hljs-number">0.0</span> || freq &gt; <span class="hljs-number">22000</span> ) &amp;&amp;
+        ((config != <span class="hljs-number">0</span>) || config != <span class="hljs-number">1</span> || config != <span class="hljs-number">2</span> )) 
+    {    
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Out of range values \n"</span>;
+    }
+    <span class="hljs-keyword">else</span> 
+    {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Start Synth \n"</span>;
+    }
+</code></pre>
+<h2 id="exercise-4-scale-quantization">Exercise 4: Scale Quantization</h2>
+<p>Open exercise 7.4 and copy the code into your project, replacing the existing contents of IAP.cpp and IAP.h.</p>
+<p>For this exercise we are going to a make a function called majorScale that quantizes all incoming notes into the C major scale. One method of doing scale quantization is to check the pitch class of a note, and if it is not in the current scale, to increment the note by 1. For example, the pitch C# would get increment by 1 to be D.</p>
+<ol>
+<li>Firstly, add a new function declaration to your IAP.h file, called majorScale that takes <strong>one int argument</strong> called note, and has <strong>int</strong> as its return type.</li>
+<li>Add the definition to the IAP.cpp file.</li>
+</ol>
+<h3 id="to-build-the-majorscale-function-">To build the majorScale function.</h3>
+<ol>
+<li>Inside the function compute the pitch of a note by doing the following sum:
+ <em>pitch = note % 12</em></li>
+<li>If the value of pitch is, 1, 3, 6, 8 or 10, increment the value of note by 1.</li>
+<li>Return note from the function.</li>
+</ol>
+<p>You should now be able to pass the incoming note from the note callback to this new function, before calculating the frequency.</p>
+<pre><code class="lang-cpp"><span class="hljs-attribute">note</span> = majorScale(note)<span class="hljs-comment">;</span>
+</code></pre>
+<p><em>There are multiple ways to check the value of pitch in step 2 above, think carefully about what we have learnt so far and apply the most appropriate method.</em></p>
+<h2 id="switch-case-">Switch Case.</h2>
+<p>A switch/case structure can often be used in place of a multi-way selection if...else if structure to create more readable and efficient flow control. If an if...else if structure tests an integer variable against a number of constant values, a switch/case structure is the preferred method.</p>
+<p>For example, a nested if structure may be used to display the days of the working week by testing the integer variable <strong>day</strong>, which represents the days Monday to Friday with a number in the range 0-4. </p>
+<pre><code class="lang-cpp">    <span class="hljs-keyword">if</span>( day == <span class="hljs-number">0</span> )
+    {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Monday\n"</span>;
+    }
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>( day == <span class="hljs-number">1</span> )
+    {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Tuesday\n"</span>;
+    }
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>( day == <span class="hljs-number">2</span> )
+    {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Wednesday\n"</span>;
+    }
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>( day == <span class="hljs-number">3</span> )
+    {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Thursday\n"</span>;
+    }
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>( day == <span class="hljs-number">4</span> )
+    {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Friday\n"</span>;
+    }
+    <span class="hljs-keyword">else</span>
+    {
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Invalid!\n"</span>;
+    }
+</code></pre>
+<p>As the variable day (in the example on the previous page) is compared with constants, this nested if structure may be replaced by the more elegant switch/case structure: </p>
+<pre><code class="lang-cpp">    <span class="hljs-keyword">switch</span> (day)
+    {
+        <span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:
+            <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Monday\n"</span>;
+            <span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:
+            <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Tuesday\n"</span>;
+            <span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:
+            <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Wednesday\n"</span>;
+            <span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">case</span> <span class="hljs-number">3</span>:
+            <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Thursday\n"</span>;
+            <span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">case</span> <span class="hljs-number">4</span>:
+            <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Friday\n"</span>;
+            <span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">default</span>:
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Invalid!\n"</span>;
+            <span class="hljs-keyword">break</span>;
+    }
+</code></pre>
+<p>The variable enclosed in the brackets, day in this example, is tested against each case from top to bottom. If a matching case is found, the subsequent statements are executed until the break statement is reached, whereupon the switch/case structure terminates. If the variable does not match a specified case, the default case is executed. </p>
+<p>Omission of the break keyword results in all statements preceding the next break statement being executed. This enables multiple cases to <em>fall through</em>, such that one set of statements can be executed for multiple cases. We will discuss this again shortly but first.</p>
+<h2 id="exercise-5-a-second-scale">Exercise 5: A Second Scale</h2>
+<p>Using the steps as before add another function to your project called pentatonicMajorScale. This time we will use switch case rather than an if statement to decide if we need to move a pitch up or down. For this exercise use a single case for each relevant pitch. A table of pitches to check for and how much to modify the input note by, is given on the next page.</p>
+<table>
+<thead>
+<tr>
+<th>Pitch</th>
+<th>Change Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Increment by 1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Increment by 1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Decrement by 1</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Increment by 1</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Increment by 1</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Decrement by 1</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Increment by 1</td>
+</tr>
+</tbody>
+</table>
+<p>Note that a variable can be increment by 1 by using the shorthand ++ operator. For example</p>
+<pre><code class="lang-cpp"><span class="hljs-comment">note</span><span class="hljs-literal">+</span><span class="hljs-literal">+</span><span class="hljs-comment">;</span>
+</code></pre>
+<p>This is equivalent to doing:</p>
+<pre><code class="lang-cpp"><span class="hljs-attribute">note</span> = note + 1;
+</code></pre>
+<p>The -- operator can be used to decrement by 1.</p>
+<h2 id="multiple-switch-case">Multiple switch case</h2>
+<p>When using an if statement you can use the || operator to check for multiple conditions inside a single if statement.</p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">if</span> (day == <span class="hljs-number">5</span> || day == <span class="hljs-number">6</span>) 
+{
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"It’s the weekend!"</span>;
+}
+</code></pre>
+<p>We can do the same with a switch case. Note that we can have multiple case statements, but we must eventually have a break tag. In this example if day is either equal to 5 or 6, then ‘It’s the weekend’ will get printed. </p>
+<pre><code class="lang-cpp">    <span class="hljs-keyword">case</span> <span class="hljs-number">5</span>:
+    <span class="hljs-keyword">case</span> <span class="hljs-number">6</span>:
+           <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"It's the weekend!"</span>;
+    <span class="hljs-keyword">break</span>;
+</code></pre>
+<p>A common error is to use a switch case but forget to use a break tag!</p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">switch</span> (day)
+{
+        <span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:
+            <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Monday\n"</span>;
+        <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:
+            <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Tuesday\n"</span>;
+            <span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:
+            <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Wednesday\n"</span>;
+            <span class="hljs-keyword">break</span>;
+}
+</code></pre>
+<p>If the variable day is equal to 0, then both Monday and Tuesday will be printed, as the user has forgot to put a break tag before case 1.</p>
+<h2 id="challenge-exercise-refactoring">Challenge Exercise: Refactoring</h2>
+<p>Refactor your solution to exercise 5 by using a switch case, with a collection of cases for the pitches that result in the output note being increment by 1, and a second collection of cases for the pitches that result in the output note being decrement by 1.</p>
+<h2 id="important-material">Important Material</h2>
+<p>Knowledge of the following will be assumed in next week’s practical: </p>
+<ol>
+<li>While loop conditions. </li>
+<li>logical operators.</li>
+<li>Using a basic string</li>
+<li>Switch/case statements. </li>
+</ol>
+
+<a href="/index.html">Return to homepage</a>
+</body>
