@@ -135,13 +135,13 @@
 </code></pre>
 <p>We will open up and use the debugger to see what is happening on each line.</p>
 <p>Firstly, click on the line number where int x = 0 has been written, to drop a break point. (see below). Break points appear in blue. (note that your line numbers may be different to those shown in the figure)</p>
-<p><img src="../images/debug2_1.png" alt="Debug 1"></p>
+<p><img src="../images/debug2_1.png" alt="Code with a breakpoint. The code is as follows: void IAP : : run () { int x = 0 ; int y = 0 ; x = 5 ; y = x ; x = 7 ; } end of code. There is a breakpoint on the line \' int x = 0 ; \'"></p>
 <p>When you run your program you should now see that the program pauses where you have placed the break point.</p>
 <p>Ensure that the debug window (1) is being shown at the bottom of the Xcode project. We can now use the step over button (2) to manual step through the program as its running. Observe what happens on each step in the debug window (1) on each press of the step over button.</p>
-<p><img src="../images/debug2_2.png" alt="Debug 2"></p>
+<p><img src="../images/debug2_2.png" alt="An XCode screenshot highlighting the debug window and the 'step over' button"></p>
 <p>On step 2 you should see that the variable <strong>y</strong> appears in the debug window and is given the value 0. Remember that before this point (step 1) the variable <strong>y</strong> was not known to the program.</p>
 <p>Step 3 should show how <strong>x</strong> now holds the number 5. Step 4 should show how both <strong>x and y</strong> now have the same value. Finally, the last step should should show the the program ends with <strong>y</strong> having a value of 5 and <strong>x</strong> a value of 7.</p>
-<p><img src="../images/debug2_3.png" alt="Debug 3"></p>
+<p><img src="../images/debug2_3.png" alt="The debug window showing \'y = 5\' and then \'x = 7\'"></p>
 <p>Although this may seem a trivial example, debugging is a very important part of learning any programming language. We will continue to use the debugger in future practicals to fix broken code and understand what is happening on each line of a program.</p>
 <p>To end the debugging process, grab the blue break point marker and drag it away to the right to remove it.</p>
 <h2 id="operators">Operators</h2>
