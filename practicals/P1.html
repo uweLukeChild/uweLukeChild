@@ -94,7 +94,7 @@ If you accidentally double-click, close the separate window that will appear and
 <p>\n is what’s called an escape sequence and lets us print characters that cannot be represented easily in code. \t is another useful escape sequence. Insert it in a few places to work out what it does. </p>
 <h2 id="keeping-a-reference-archive-of-your-work">Keeping a reference archive of your work</h2>
 <p>To help you keep a reference of your work to help with future practicals and assignments, we have developed a handy application called <code>CodeBook</code>. </p>
-<p><img src="../images/codebook.png" /></p>
+<p><img src="../images/codebook.png" alt="A screenshot of the codebook application"/></p>
 <p>This application helps you take a snapshot of your work, with neatly organised spaces for each and every exercise of each and every practical. </p>
 <ol>
 <li>In finder, navigate to the IAP <code>apps</code> folder and open CodeBook.app.</li>
@@ -113,7 +113,7 @@ If you accidentally double-click, close the separate window that will appear and
 <p>Code book stores files in a <code>code book files</code> folder, you should avoid manual edits to this folder and <strong>back it up carefully</strong>.</p>
 <h2 id="aserve-2-0">Aserve 2.0</h2>
 <p>From your Documents/iap/ folder, find and launch Aserve. You should see the following interface: </p>
-<p><img src="../images/aserve_screen_shot_a.png" /></p>
+<p><img src="../images/aserve_screen_shot_a.png" alt="A screenshot of Aserve. There is an oscillator window, audio channel list, sampler size window, pitched sampler size window, a clickable pixel grid, debug window, and a virtual piano keyboard with control surfaces." /></p>
 <h1 id="how-xcode-and-aserve-work-together">How Xcode and Aserve work together</h1>
 <p>To produce sound in a musical context Aserve and your Xcode program work together as a &#39;client and server&#39;. This is very similar to how a client at a restaurant might request food from the serving staff. Okay maybe that&#39;s a silly analogy - but it&#39;s not too bad!</p>
 <p>Broadly speaking:</p>
@@ -127,7 +127,7 @@ If you accidentally double-click, close the separate window that will appear and
 </ul>
 </li>
 </ul>
-<p><img src="../images/AserveXcodeYourProgram.png" /></p>
+<p><img src="../images/AserveXcodeYourProgram.png" alt="A block diagram showing the Aserve/XCode ecosystem. XCode houses your program. Aserve houses oscillators, samplers, midi input, and audio output."/></p>
 <p>We&#39;ll explore the second scenario (responding to MIDI controls) in later practicals, for now let&#39;s start with something simple.</p>
 <h2 id="exercise-2-test-tone">Exercise 2: Test Tone</h2>
 <p>Return to Xcode and and delete the std::cout line and replace it with the following: </p>
@@ -171,7 +171,7 @@ aserveSleep(<span class="hljs-number">1000</span>);
 <p>The oscillator function call is followed by a call to aserveSleep(), which causes program execution to pause for the time specified as its argument in milliseconds (i.e. aserveSleep(1000); will pause the program for 1 second). This causes the tone to be sustained for one second before the program exits (and the tone is stopped). </p>
 <p>Make sure you save your solution to this exercise to codeBook before moving on.</p>
 <h2 id="exercise-3-sequential-programming">Exercise 3: Sequential Programming</h2>
-<p><img src="../images/score_greensleves.png" /></p>
+<p><img src="../images/score_greensleves.png" alt="a manuscript outlining the beginning of the song Greensleeves." /></p>
 <p>The score for the first four bars of Greensleeves is shown above. Program the score using the aserveOscillator(), and aserveSleep() functions. Do not worry if you are unable to read music, the note names and durations are indicated below and a table showing the standard piano note names, frequencies, and durations are provided at the end of this practical. </p>
 <table>
 <thead>
@@ -294,7 +294,7 @@ aserveOscillator(<span class="hljs-number">2</span>, <span class="hljs-number">4
 aserveSleep(<span class="hljs-number">1000</span>);
 </code></pre>
 <p>The following code will now play a 1kz, 2khz and 4kz tone at the same time. Using this technique program in the following chord sequence. </p>
-<p><img src="../images/metascore.png" /></p>
+<p><img src="../images/metascore.png" alt="A manuscript showing four 3-note chords in a bar of 4/4 music." /></p>
 <table>
 <thead>
 <tr>
@@ -337,7 +337,7 @@ aserveSleep(<span class="hljs-number">1000</span>); <span class="hljs-comment">/
 </code></pre>
 <h2 id="mario-theme">Mario Theme</h2>
 <p>Lets program something a little more modern. Do not worry if you do not get time to complete this exercise.</p>
-<p><img src="../images/marioscore.png" /></p>
+<p><img src="../images/marioscore.png" alt="The manuscript for the beginning phrase of the Mario theme tune." /></p>
 <p>A table of events is given in the appendix.</p>
 <h2 id="exercise-homework">Exercise: Homework</h2>
 <p>Your homework task for this week is to program in your own choice of music, using what we have learnt in this session, or: Complete the Mario theme exercise.</p>
